@@ -21,7 +21,7 @@
         <h3 class="widget-title">Categories</h3>
         <ul>
             {% for category in site.categories %}
-            <li class="cat-item cat-item-2"><a href="{{ category.url }}">{{ category | first }}</a>
+            <li class="cat-item cat-item-2"><a href="/category/{{ category | first | slugify }}">{{ category | first }}</a>
             </li>
             {% endfor %}
         </ul>

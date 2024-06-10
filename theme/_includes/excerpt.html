@@ -1,0 +1,30 @@
+<div class="grid__item">
+    <article
+        class="element__frame post type-post status-publish format-standard has-post-thumbnail hentry"
+        itemprop="blogPost" itemscope="" itemtype="http://schema.org/blogPosting">
+        <header class="entry-header"><span class="posted-on">{{ post.date | date: "%-d %B %Y" }}</span>
+            <a href="{{ post.url }}">
+                <h3 class="entry__title" itemprop="headline"><span>{{ post.title }}</span></h3>
+            </a>
+        </header><a href="{{ post.url }}" class="entry-thumbnail">
+            <img src="/assets/media/{{ post.image }}"></a>
+
+        <div class="clear"></div>
+
+        <footer class="entry-meta homepage">
+            <meta itemprop="mainEntityOfPage" content="Guia: Com descarregar un vídeo en streaming"><span
+                itemprop="author publisher" itemscope="" itemtype="http://schema.org/Organization">
+                <meta itemprop="name" content="turing"><span itemprop="logo" itemscope=""
+                    itemtype="http://schema.org/ImageObject">
+                    <meta itemprop="url" content="">
+                </span>
+
+
+                <meta itemprop="url" content="https://lamaquinadeturing.su">
+            </span>
+
+            <p class="posted-on">Published on <a href="{{ post.url }}"><time class="entry-date published updated"
+                        datetime="2021-08-24T17:28:13+00:00" itemprop="datePublished">{{ post.date | date: "%-d %B %Y" }}</time></a></p>
+        </footer>
+    </article>
+</div>

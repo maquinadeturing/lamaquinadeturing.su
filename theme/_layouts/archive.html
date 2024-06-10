@@ -1,8 +1,9 @@
 ---
 layout: default
 variant: collection
+show_title: true
 ---
 
-{% for post in site.posts %}
+{% for post in page.posts %}
 {% include excerpt.html %}
 {% endfor %}

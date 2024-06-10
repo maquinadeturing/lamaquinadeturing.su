@@ -31,6 +31,14 @@ github_username:  jekyll
 theme: lamaquinadeturing
 plugins:
   - jekyll-feed
+  - jekyll-archives
+
+jekyll-archives:
+  enabled:
+    - categories
+  layout: 'archive'
+  permalinks:
+    category: '/category/:name/'
 
 # Exclude from processing.
 # The following items will not be processed, by default.

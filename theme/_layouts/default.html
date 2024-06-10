@@ -5,79 +5,31 @@
 
         {% include header.html %}
 
-        <section class="grid__single" itemscope="" itemtype="http://schema.org/BlogPost">
-            <div class="grid__item">
-                <article itemprop="blogPost" itemscope="" itemtype="http://schema.org/BlogPosting" id="post-5"
-                    class="element__frame post-5 post type-post status-publish format-standard has-post-thumbnail hentry category-cibernetica category-lzhenauka">
-                    <header class="entry-header">
-                        {% for category in page.categories %}
-                        <a href="/category/{{ category | slugify }}" class="category-name" itemprop="articleSection">{{ category }}</a>
-                        {% endfor %}
-                        <h2 class="entry__title" itemprop="headline">{{ page.title }}</h2>
-                    </header>
-                    <div class="entry-content" itemprop="articleBody">
-                        <div class="entry-thumbnail-single landscape" itemprop="image">
-                            <img src="/assets/media/{{ page.image }}" class="attachment-large size-large wp-post-image"
-                                alt="" width="580" height="410">
-                        </div>
+        {% if layout.variant == 'collection' %}
+        <section class="grid" itemscope="" itemtype="http://schema.org/Blog">
 
-                        {{ content }}
+            {% if layout.show_title %}
+            <header><h2 class="page-title">{{ page.title }}</h2></header>
+            {% endif %}
 
-                    </div>
-                    <div class="clear"></div>
+            {{ content }}
 
-                </article>
-                <div class="brutalist_themes__related_posts">
-
-                    <h4 class="widget-title">You might also like</h4>
-
-                    <ul>
-                        <li itemscope="" itemtype="http://schema.org/blogPost">
-                            <a class="title"
-                                href="https://lamaquinadeturing.su/2020/05/01/cibernetica-al-servicio-del-comunismo/"
-                                title="Cibernética – al servicio del comunismo">
-                                <img src="index_fitxers/cybernetics-150x150.png"
-                                    class="attachment-thumbnail size-thumbnail wp-post-image"
-                                    alt="Cibernética – al servicio del comunismo" itemprop="image"
-                                    itemtype="http://schema.org/thumbnailUrl" width="150" height="150">
-                                <h5 itemscope="" itemtype="http://schema.org/headline">Cibernética – al servicio del
-                                    comunismo</h5>
-                            </a>
-                        </li>
-                        <li itemscope="" itemtype="http://schema.org/blogPost">
-                            <a class="title"
-                                href="https://lamaquinadeturing.su/2020/05/01/cuando-la-inteligencia-artificial-desplazo-la-cibernetica/"
-                                title="Cuando la inteligencia artificial desplazó la cibernética">
-                                <img src="index_fitxers/darthsmouth-1-150x150.jpg"
-                                    class="attachment-thumbnail size-thumbnail wp-post-image"
-                                    alt="Cuando la inteligencia artificial desplazó la cibernética" itemprop="image"
-                                    itemtype="http://schema.org/thumbnailUrl" width="150" height="150">
-                                <h5 itemscope="" itemtype="http://schema.org/headline">Cuando la inteligencia artificial
-                                    desplazó la cibernética</h5>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="clear"></div>
-                </div>
-            </div>
-
-            <div class="grid__item">
-
-                {% include sidebar.html %}
-
-            </div>
+            <div class="grid__item" style="grid-column-start: 1; grid-column-end: 2"></div>
 
         </section>
+        {% else %}
+        <section class="grid__single" itemscope="" itemtype="http://schema.org/BlogPost">
+
+            {{ content }}
+
+        </section>
+        {% endif %}
 
         {% include footer.html %}
     </div>
 
     <a class="element__frame scroll-top" href="#scroll-top" title="scroll top" style="display: none;">
-        <p class="bar__title">
-            Top </p>
+        <p class="bar__title">Top</p>
     </a>
-
-
 </body>
-
 </html>
