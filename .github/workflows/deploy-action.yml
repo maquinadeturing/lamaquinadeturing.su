@@ -1,0 +1,38 @@
+name: Deploy site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.3
+
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install --retry 3
+
+    - name: Build the site
+      run: bundle exec jekyll build
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        personal_token: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
+        external_repository: maquinadeturing/maquinadeturing.github.io
+        publish_branch: main
+        publish_dir: ./_site
+        user_name: 'lamaquinadeturing'
+        user_email: 'bot@lamaquinadeturing.su'
+        full_commit_message: 'Deploy from GitHub Actions'
