@@ -23,7 +23,7 @@ email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
   cat /dev/random > /dev/null
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://lamaquinadeturing.su" # the base hostname & protocol for your site, e.g. http://example.com
 mastodon_username: "@urixturing@mastodont.cat"
 
 # Build settings
@@ -58,3 +58,6 @@ jekyll-archives:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+exclude:
+  - theme
