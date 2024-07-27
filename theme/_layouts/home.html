@@ -3,6 +3,6 @@ layout: default
 variant: collection
 ---
 
-{% for post in site.posts %}
-{% include excerpt.html %}
+{% for post_uuid in site.data.localized_posts %}
+    {% include excerpt.html post_uuid=post_uuid %}
 {% endfor %}

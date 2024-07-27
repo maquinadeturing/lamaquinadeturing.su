@@ -1,13 +1,26 @@
 <header id="site-header" itemscope="" itemtype="http://schema.org/WPHeader">
     <div id="branding-wrapper" class="element__frame">
-        <a href="{{ site.url }}" rel="home" itemscope="" itemtype="http://schema.org/Brand">
+        <a href="{{ site.url | append: '/' | append: page.lang }}" rel="home" itemscope="" itemtype="http://schema.org/Brand">
             <h1 class="site-title" itemprop="name">{{ site.title }}</h1>
         </a>
     </div>
 
+    <nav class="element__frame">
+        <!-- <p class="bar__title">Lang</p> -->
+
+        <ul class="pull clear">
+            <li class="menu-item"><span>{{ page.lang }}</span></li>
+            {% for lang in site.data.languages %}
+                {% if lang != page.lang %}
+                    <li class="menu-item"><a href="{{ site.url | append: '/' | append: lang }}">{{ lang }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+
     <nav itemscope="" itemtype="http://schema.org/SiteNavigationElement" class="element__frame" id="mobile-window">
         <p class="bar__title">
-            Topics </p>
+            {{ 'Topics' | localize: page.lang }} </p>
         <a id="nav-toggle" class="nav-slide-button" href="#"><span></span></a>
 
         <ul id="primary-menu" class="pull clear">
@@ -29,7 +42,7 @@
     <ul class="social-media-profiles element__frame">
         <li>
             <p class="bar__title">
-                Social </p>
+                {{ 'Social' | localize: page.lang }} </p>
         </li>
         {% if site.mastodon_username %}
             {% assign parts = site.mastodon_username | split: "@" %}

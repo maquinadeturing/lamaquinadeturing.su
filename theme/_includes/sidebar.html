@@ -1,6 +1,6 @@
 <aside class="widget-area" itemscope="" itemtype="http://schema.org/WPSideBar">
     <div id="recent-posts-2" class="widget element__frame widget_recent_entries">
-        <h3 class="widget-title">Recent Posts</h3>
+        <h3 class="widget-title">{{ 'Recent Posts' | localize: page.lang }}</h3>
         <ul>
             {% for post in site.posts %}
             <li>
@@ -18,7 +18,7 @@
         </ul>
     </div> -->
     <div id="categories-2" class="widget element__frame widget_categories">
-        <h3 class="widget-title">Categories</h3>
+        <h3 class="widget-title">{{ 'Categories' | localize: page.lang }}</h3>
         <ul>
             {% for category in site.categories %}
             <li class="cat-item cat-item-2"><a href="/category/{{ category | first | slugify }}">{{ category | first }}</a>

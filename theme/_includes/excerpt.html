@@ -1,8 +1,24 @@
+{% if include.post_uuid != nil %}
+    {% assign post = site.posts | where: "uuid", include.post_uuid | where: "lang", page.lang | first %}
+    {% unless post %}
+        {% assign post = site.posts | where: "uuid", include.post_uuid | first %}
+    {% endunless %}
+{% endif %}
+
 <div class="grid__item">
     <article
         class="element__frame post type-post status-publish format-standard has-post-thumbnail hentry"
         itemprop="blogPost" itemscope="" itemtype="http://schema.org/blogPosting">
-        <header class="entry-header"><span class="posted-on">{{ post.date | date: "%-d %B %Y" }}</span>
+        <header class="entry-header"><span class="posted-on">{{ post.date | localized_date: "%-d %b %Y", page.lang }}</span>
+            {% if post.lang != page.lang %}
+                <p class="entry__meta translations-box"><span class="lang-icon"></span> {{ 'Only available in' | localize: page.lang }}:
+                    <span class="box-shadow lang-code">{{ post.lang }}</span>
+                    {% assign translations = post | translations %}
+                    {% for translation in translations %}
+                        <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.lang }}</a>
+                    {% endfor %}
+                </p>
+            {% endif %}
             <a href="{{ post.url }}">
                 <h3 class="entry__title" itemprop="headline"><span>{{ post.title }}</span></h3>
             </a>
@@ -24,7 +40,7 @@
             </span>
 
             <p class="posted-on">Published on <a href="{{ post.url }}"><time class="entry-date published updated"
-                        datetime="2021-08-24T17:28:13+00:00" itemprop="datePublished">{{ post.date | date: "%-d %B %Y" }}</time></a></p>
+                        datetime="2021-08-24T17:28:13+00:00" itemprop="datePublished">{{ post.date | localized_date: "%-d %b %Y", page.lang }}</time></a></p>
         </footer>
     </article>
 </div>
