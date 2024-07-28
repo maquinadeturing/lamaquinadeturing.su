@@ -26,19 +26,11 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://lamaquinadeturing.su" # the base hostname & protocol for your site, e.g. http://example.com
 mastodon_username: "@urixturing@mastodont.cat"
 
-defaults:
-- scope:
-    path: '_posts/ca'
-    type: 'posts'
-  values:
-    permalink: 'ca/:year/:month/:title/'
-    lang: ca
-- scope:
-    path: '_posts/es'
-    type: 'posts'
-  values:
-    permalink: 'es/:year/:month/:title/'
-    lang: es
+languages:
+  - ca
+  - en
+  - es
+
 # Build settings
 theme: lamaquinadeturing
 plugins:

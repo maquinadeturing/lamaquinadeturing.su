@@ -1,4 +1,5 @@
 require 'securerandom'
+require 'set'
 
 module Localization
     class LanguageGenerator < Jekyll::Generator
@@ -7,10 +8,14 @@ module Localization
         def generate(site)
             # Define an empty map
             post_groups = {}
-            languages = {}
+            languages = site.config['languages']
 
             site.posts.docs.each do |post|
-                languages[post['lang']] = true
+                unless post['lang']
+                    if post.path =~ %r{_posts/(\w{2})/}
+                        post.data['lang'] = $1
+                    end
+                end
 
                 # Group posts by their 'uuid' property. If the 'uuid' property is not defined, generate a random one
                 uuid = post['uuid'] || SecureRandom.uuid
@@ -22,14 +27,16 @@ module Localization
                 post_groups[uuid] = post.date
             end
 
-            # Assign the languages to site.data['languages']
-            site.data['languages'] = languages.keys
-
             # Assign the keys of the post_groups map to site.data['localized_posts'] as an array sorted by date
             site.data['localized_posts'] = (post_groups.keys.sort_by { |uuid| post_groups[uuid] }).reverse
 
             # Generate the index pages for each language
-            languages.keys.each do |lang|
+            languages.each do |lang|
+                site.config['defaults'] ||= []
+                site.config['defaults'] << {
+                    'scope' => { 'path' => "_posts/#{lang}", 'type' => 'posts' },
+                    'values' => { 'permalink' => "#{lang}/:year/:month/:title/", 'lang' => lang }
+                }
                 site.pages << LanguagePage.new(site, lang)
             end
         end
@@ -72,12 +79,27 @@ end
 module Jekyll
     module LocalizationFilter
         def translations(post)
-            @context.registers[:site].posts.docs.select { |p| p['uuid'] == post['uuid'] && p['lang'] != post['lang'] }
+            languages = @context.registers[:site].config['languages']
+            translations = @context.registers[:site].posts.docs.select { |p| p['uuid'] == post['uuid'] && p['lang'] != post['lang'] }
+            translations.sort_by { |p| languages.index(p['lang']) || languages.size }
         end
 
         def localize(string, lang)
             return string if lang.nil?
-            @context.registers[:site].data['localization'][string][lang]
+            @context.registers[:site].data['localization'][string][lang] || string
+        end
+
+        def find_prefered_translation(uuid, prefered_lang)
+            # If the post is in the desired language, return it
+            post = @context.registers[:site].posts.docs.find { |p| p['uuid'] == uuid && p['lang'] == prefered_lang }
+            return post if post
+
+            # If the post is not in the desired language, return a translation following the order of the languages array
+            languages = @context.registers[:site].config['languages']
+            for language in languages
+                post = @context.registers[:site].posts.docs.find { |p| p['uuid'] == uuid && p['lang'] == language }
+                return post if post
+            end
         end
 
         def localized_date(date, format, lang)

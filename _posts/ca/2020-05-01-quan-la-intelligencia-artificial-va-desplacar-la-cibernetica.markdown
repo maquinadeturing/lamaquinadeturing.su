@@ -7,7 +7,7 @@ image:  darthsmouth.jpg
 categories: Cibernètica
 ---
 
-_Fragment de_ On the Importance of Being Emergent _de Peter Cariani[^1]. En la pugna entre els fundadors de la intel·ligència artificial contra els defensors de la cibernètica, cal entendre que el paradigma dominant de la *IA fins als anys 80 era el de les representacions simbòliques dels problemes, i per tant descartava mètodes com l'aprenentatge autònom i les xarxes neuronals, basats en el processament estadístic i contemplat per la cibernètica, que irònicament avui dia és el que més s'associa a la intel·ligència artificial._
+_Fragment de_ On the Importance of Being Emergent _de Peter Cariani[^1]. En la pugna entre els fundadors de la intel·ligència artificial contra els defensors de la cibernètica, cal entendre que el paradigma dominant de la IA fins als anys 80 era el de les representacions simbòliques dels problemes, i per tant descartava mètodes com l'aprenentatge autònom i les xarxes neuronals, basats en el processament estadístic i contemplat per la cibernètica, que irònicament avui dia és el que més s'associa a la intel·ligència artificial._
 
 <hr class="wp-block-separator is-style-wide">
 

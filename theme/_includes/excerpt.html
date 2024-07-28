@@ -1,8 +1,5 @@
 {% if include.post_uuid != nil %}
-    {% assign post = site.posts | where: "uuid", include.post_uuid | where: "lang", page.lang | first %}
-    {% unless post %}
-        {% assign post = site.posts | where: "uuid", include.post_uuid | first %}
-    {% endunless %}
+    {% assign post = include.post_uuid | find_prefered_translation: page.lang %}
 {% endif %}
 
 <div class="grid__item">

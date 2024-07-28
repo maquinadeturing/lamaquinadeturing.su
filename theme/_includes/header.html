@@ -10,7 +10,7 @@
 
         <ul class="pull clear">
             <li class="menu-item"><span>{{ page.lang }}</span></li>
-            {% for lang in site.data.languages %}
+            {% for lang in site.languages %}
                 {% if lang != page.lang %}
                     <li class="menu-item"><a href="{{ site.url | append: '/' | append: lang }}">{{ lang }}</a></li>
                 {% endif %}
