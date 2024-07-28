@@ -5,11 +5,23 @@
 
         {% include header.html %}
 
-        {% if layout.variant == 'collection' %}
+        {% if layout.variant == 'home' or layout.variant == 'collection' %}
         <section class="grid" itemscope="" itemtype="http://schema.org/Blog">
 
-            {% if layout.show_title %}
-            <header><h2 class="page-title">{{ page.title }}</h2></header>
+            {% if layout.variant == 'collection' %}
+
+
+            <div class="grid__item">
+                <article
+                    class="element__frame post type-post status-publish format-standard has-post-thumbnail hentry"
+                    itemprop="blogPost" itemscope="" itemtype="http://schema.org/blogPosting">
+                    <header><h2 class="page-title">{{ 'Category' | localize: page.lang }}: {{ page.title }}</h2></header>
+                    {% if page.collection_content != nil %}
+                    <div class="clear"></div>
+                    {{ page.collection_content }}
+                    {% endif %}
+                </article>
+            </div>
             {% endif %}
 
             {{ content }}

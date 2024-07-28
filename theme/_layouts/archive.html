@@ -1,9 +1,8 @@
 ---
 layout: default
 variant: collection
-show_title: true
 ---
 
-{% for post in page.posts %}
-{% include excerpt.html %}
+{% for post_uuid in page.localized_posts %}
+    {% include excerpt.html post_uuid=post_uuid %}
 {% endfor %}

@@ -4,7 +4,7 @@ uuid: 1f8fbc0d-7856-4f82-9cf1-19b2738e90fd
 title:  "“Cibernètica” (en el Breu diccionari filosòfic, 1954)"
 date:   2020-04-13 12:00:00 +0200
 image:  breve-diccionario-filosofico.jpg
-categories: Cibernética Lzhenaúka
+categories: Cibernètica Ljenaüka
 ---
 
 _La cibernètica va començar proscrita a l'URSS de Stalin, quan les idees i les postures fins i tot científiques s'interpretaven com a posicionaments polítics dins de les lluites burocràtiques del partit. El següent text és una mostra de la primerenca virulència contra la cibernètica, que avui entendríem com a informàtica i intel·ligència artificial, durant aquests anys._

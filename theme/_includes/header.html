@@ -24,8 +24,13 @@
         <a id="nav-toggle" class="nav-slide-button" href="#"><span></span></a>
 
         <ul id="primary-menu" class="pull clear">
-            <li id="menu-item-18" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18"><a
-                    href="/category/cibernética/">Cibernética</a></li>
+            {% for category_group_pair in site.data.categories %}
+                {% assign categories = category_group_pair[1] | where: 'lang', page.lang %}
+                {% for category in categories %}
+                <li class="menu-item"><a href="{{ category.url }}">{{ category.title }}</a></li>
+                {% endfor %}
+            {% endfor %}
+
             <li>
                 <!-- <form role="search" method="get" class="search-form" action="https://duckduckgo.com/">
                     <label>

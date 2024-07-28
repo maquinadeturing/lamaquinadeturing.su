@@ -4,7 +4,7 @@ uuid: 28623ef9-070a-464c-889c-f5a42fac3cd4
 title:  "“Cybernetics” (in A Dictionary of Philosophy, 1967)"
 date:   2024-07-27 19:00:00 +0200
 image:  a-dictionary-of-philosophy.jpg
-categories: Cibernética Lzhenaúka
+categories: Cybernetics Lzhenauka
 ---
 
 _Cybernetics entry in_ A Dictionary of Philosophy, _the influential work that reflected the political consensus in the USSR about many topics. This entry, probably based on the 1963 edition in Russian by Rozental and Yudin, reflects the post-Stalin view of cybernetics. Compare to {% link_uuid uuid=1f8fbc0d-7856-4f82-9cf1-19b2738e90fd title='this older entry' %} from a 1954 edition, where it is dubbed a "reactionary pseudoscience", "mechanicist" and "idealist". In contrast, in this edition cybernetics is "against" idealist philosophy._

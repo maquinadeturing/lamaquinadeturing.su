@@ -17,12 +17,14 @@
             <li><a href="https://lamaquinadeturing.su/2020/04/">April 2020</a></li>
         </ul>
     </div> -->
-    <div id="categories-2" class="widget element__frame widget_categories">
+    <div class="widget element__frame widget_categories">
         <h3 class="widget-title">{{ 'Categories' | localize: page.lang }}</h3>
         <ul>
-            {% for category in site.categories %}
-            <li class="cat-item cat-item-2"><a href="/category/{{ category | first | slugify }}">{{ category | first }}</a>
-            </li>
+            {% for category_group_pair in site.data.categories %}
+            {% assign categories = category_group_pair[1] | where: 'lang', page.lang %}
+            {% for category in categories %}
+            <li class="cat-item cat-item-2"><a href="{{ category.url }}">{{ category.title }}</a></li>
+            {% endfor %}
             {% endfor %}
         </ul>
     </div>

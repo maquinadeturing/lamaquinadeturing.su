@@ -9,8 +9,9 @@ layout: default
             <span class="posted-on">{{ page.date | localized_date: "%-d %b %Y", page.lang }}</span>
             {% if page.categories != empty %}
             <div>
-            {% for category in page.categories %}
-            <a href="/category/{{ category | slugify }}" class="category-name" itemprop="articleSection">{{ category }}</a>
+            {% for category_name in page.categories %}
+            {% assign category = category_name | get_category_by_name: page.lang %}
+            <a href="{{ category.url }}" class="category-name" itemprop="articleSection">{{ category.title }}</a>
             {% endfor %}
             </div>
             {% endif %}
