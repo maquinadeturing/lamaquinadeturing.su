@@ -78,9 +78,9 @@ end
 
 module Jekyll
     module LocalizationFilter
-        def translations(post)
+        def translations(uuid, lang = nil)
             languages = @context.registers[:site].config['languages']
-            translations = @context.registers[:site].posts.docs.select { |p| p['uuid'] == post['uuid'] && p['lang'] != post['lang'] }
+            translations = @context.registers[:site].posts.docs.select { |p| p['uuid'] == uuid && (lang.nil? || p['lang'] != lang) }
             translations.sort_by { |p| languages.index(p['lang']) || languages.size }
         end
 
@@ -130,6 +130,50 @@ module Jekyll
             @context.invoke('date', date, format)
         end
     end
+
+    module TranslationTags
+        class LinkUuidTag < Liquid::Tag
+            def initialize(tag_name, input, tokens)
+                super
+                Jekyll.logger.info "LinkUuidTag: #{input}"
+
+                # Param is a word and value is a string enclosed in single quotes or a word without spaces
+                param_pattern = /\s*(\w+)=('[^']+'|[^ ]+)\s*/
+
+                # Match all the param=value pairs in the input string, there can be more than one like `param1=value1 param2=value2`
+                match = input.scan(param_pattern)
+
+                # Verify that the matched parameters are exactly `title` and `uuid`
+                raise 'Invalid tag parameters, expected title and uuid' if match.map { |m| m[0] }.to_set != ['title', 'uuid'].to_set
+
+                # Assign the values to instance variables, removing the single quotes if present
+                @title = match.find { |m| m[0] == 'title' }[1].gsub("'", '')
+                @uuid = match.find { |m| m[0] == 'uuid' }[1].gsub("'", '')
+            end
+
+            def render(context)
+                include_tag = "{% include link.html title='#{@title}' post_uuid='#{@uuid}' %}"
+                parsed_tag = Liquid::Template.parse(include_tag)
+                parsed_tag.render(context)
+            end
+        end
+    end
+
+    module RaiseError
+        class RaiseTag < Liquid::Tag
+            def initialize(tag_name, text, tokens)
+                super
+                # Jekyll.logger.info "AssertDefinedTag: #{value}"
+                @text = text
+            end
+
+            def render(context)
+                raise @text
+            end
+        end
+    end
 end
 
 Liquid::Template.register_filter(Jekyll::LocalizationFilter)
+Liquid::Template.register_tag('raise', Jekyll::RaiseError::RaiseTag)
+Liquid::Template.register_tag('link_uuid', Jekyll::TranslationTags::LinkUuidTag)

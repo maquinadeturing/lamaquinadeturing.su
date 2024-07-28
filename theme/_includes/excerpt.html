@@ -10,7 +10,7 @@
             {% if post.lang != page.lang %}
                 <p class="entry__meta translations-box"><span class="lang-icon"></span> {{ 'Only available in' | localize: page.lang }}:
                     <span class="box-shadow lang-code">{{ post.lang }}</span>
-                    {% assign translations = post | translations %}
+                    {% assign translations = post.uuid | translations: post.lang %}
                     {% for translation in translations %}
                         <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.lang }}</a>
                     {% endfor %}
