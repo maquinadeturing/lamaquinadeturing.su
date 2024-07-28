@@ -6,10 +6,14 @@ layout: default
     <article itemprop="blogPost" itemscope="" itemtype="http://schema.org/BlogPosting" id="post-5"
         class="element__frame post type-post status-publish format-standard has-post-thumbnail hentry">
         <header class="entry-header">
+            <span class="posted-on">{{ page.date | localized_date: "%-d %b %Y", page.lang }}</span>
+            {% if page.categories != empty %}
+            <div>
             {% for category in page.categories %}
-            <a href="/category/{{ category | slugify }}" class="category-name" itemprop="articleSection">{{ category
-                }}</a>
+            <a href="/category/{{ category | slugify }}" class="category-name" itemprop="articleSection">{{ category }}</a>
             {% endfor %}
+            </div>
+            {% endif %}
             <h2 class="entry__title" itemprop="headline">{{ page.title }}</h2>
         </header>
         <div class="entry-content" itemprop="articleBody">
@@ -17,6 +21,15 @@ layout: default
                 <img src="/assets/media/{{ page.image }}" class="attachment-large size-large wp-post-image" alt=""
                     width="580" height="410">
             </div>
+
+            {% assign translations = page.uuid | translations: page.lang %}
+            {% if translations != empty %}
+                <p class="entry__meta translations-box"><span class="lang-icon"></span> {{ 'Also available in' | localize: page.lang }}:
+                    {% for translation in translations %}
+                        <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.lang }}</a>
+                    {% endfor %}
+                </p>
+            {% endif %}
 
             {{ content }}
 

@@ -9,7 +9,7 @@
         <header class="entry-header"><span class="posted-on">{{ post.date | localized_date: "%-d %b %Y", page.lang }}</span>
             {% if post.lang != page.lang %}
                 <p class="entry__meta translations-box"><span class="lang-icon"></span> {{ 'Only available in' | localize: page.lang }}:
-                    <span class="box-shadow lang-code">{{ post.lang }}</span>
+                    <a href="{{ post.url }}" class="box-shadow lang-code">{{ post.lang }}</a>
                     {% assign translations = post.uuid | translations: post.lang %}
                     {% for translation in translations %}
                         <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.lang }}</a>
