@@ -32,7 +32,6 @@ languages:
   - es
 
 # Build settings
-theme: lamaquinadeturing
 plugins:
   - jekyll-feed
 
