@@ -47,4 +47,10 @@
 			box-shadow: 2px 2px 11px #666666;
 		}
 	</style>
+
+	<script>
+		var page_lang = "{{ page.lang }}";
+		var site_languages = [{% for lang in site.languages %}"{{ lang }}",{% endfor %}];
+	</script>
+	<script type="text/javascript" src="/assets/js/search.js"></script>
 </head>
