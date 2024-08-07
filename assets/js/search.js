@@ -1,6 +1,6 @@
 var search_index = null;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let search_form_element = document.querySelector('.search-form');
     let search_field_element = document.querySelector('.search-field');
     let search_results_element = document.querySelector('.search-results');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         submit_search();
     });
 
-    search_field_element.addEventListener('input', function() {
+    search_field_element.addEventListener('input', function () {
         submit_search();
     });
 
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    search_field_element.addEventListener('focus', function() {
+    search_field_element.addEventListener('focus', function () {
         submit_search();
     });
 
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (search_timeout) {
             clearTimeout(search_timeout);
         }
-        search_timeout = setTimeout(async function() {
+        search_timeout = setTimeout(async function () {
             clear_search_results();
 
             if (!query) {
@@ -50,13 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             posts.forEach((post_lang_map) => {
-                // Within the post group, use the title of the language `page_lang` if it exists.
                 if (post_lang_map.has(page_lang)) {
                     var post = post_lang_map.get(page_lang);
-                    // Get the links to the posts in other languages, if any
                     var other_langs = [];
                 } else {
-                    // Take the post in post_lang_map whose language that appears first in the list `site_languages`
                     var post = Array.from(post_lang_map.values()).find((post) => site_languages.includes(post.lang));
                     var other_langs = Array.from(post_lang_map.keys()).filter((lang) => lang != post.lang);
                 }
@@ -67,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     search_result_item.innerHTML += '<a href="' + post.url + '" class="box-shadow lang-code">' + post.lang + '</a>';
                 }
 
-                // Append the following HTML for each post in other_langs `<a href="post url" class="box-shadow lang-code">lang</a>`
                 other_langs.forEach((lang) => {
                     search_result_item.innerHTML += '<a href="' + post_lang_map.get(lang).url + '" class="box-shadow lang-code">' + lang + '</a>';
                 });
@@ -81,21 +77,35 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function search_posts(query) {
-    console.log("Searching for: " + query);
+    console.log("Searching for: '" + query + "'");
 
     let index = await get_search_index();
     let posts_results = new Map; // { uuid => { "lang" => ..., "title" => ..., "date" => ..., "url" => ..., "score" => ... }, ... }
+    const words = get_ansi_words(query);
 
-    word_search = search_word_index(query, index);
+    const word_search = search_content_index(words, index.content_index);
+    const title_index_search = search_title_index(words, index.title_index);
+    const title_list_search = search_title_list(words, index.ansi_titles);
 
-    for (var [post_index, words] of word_search) {
+    console.log("Content index results: ", word_search);
+    console.log("Title index results: ", title_index_search);
+    console.log("Title list results: ", title_list_search);
+
+    let combined_results = new Map;
+    combined_results = new Map();
+
+    for (const serach_result of [word_search, title_index_search, title_list_search]) {
+        for (var [post_index, score] of serach_result) {
+            if (combined_results.has(post_index)) {
+                combined_results.set(post_index, combined_results.get(post_index) + score);
+            } else {
+                combined_results.set(post_index, score);
+            }
+        }
+    }
+
+    for (var [post_index, score] of combined_results) {
         let post = index_data.posts[post_index];
-        // console.log("Post index: " + post.title);
-        // for (var [word, result] of words) {
-        //     console.log("  Word: " + word + " (" + result.count + ", " + Math.round(result.score * 100) + "%)");
-        // }
-        let total_score = Array.from(words.values()).reduce((acc, score) => acc + score.score, 0);
-        // console.log("  Score: " + Math.round(total_score * 100));
 
         if (!posts_results.has(post.uuid)) {
             posts_results.set(post.uuid, new Map);
@@ -106,9 +116,11 @@ async function search_posts(query) {
             title: post.title,
             date: post.date,
             url: post.url,
-            score: total_score
+            score: score
         });
     }
+
+    console.log("Combined results: ", combined_results);
 
     return Array.from(posts_results.values()).sort((a, b) => {
         let score_a = Array.from(a.values()).map((post) => post.score).reduce((acc, score) => Math.max(acc, score), 0);
@@ -139,33 +151,144 @@ async function get_search_index() {
 
         console.log("Search index loaded.");
 
-        // Assign the search index to the global variable but
-        // replacing the word arrays with a BKTree object for each language.
-
-        search_index = {};
+        search_index = {
+            "content_index": {}, // { lang: BKTree, ... }
+            "title_index": new BKTree(levenshtein_distance), // BKTree
+            "ansi_titles": [], // Title of each post with ANSI characters
+        };
         for (let lang in index_data.index) {
-            tree = new BKTree(levenshtein_distance);
+            let tree = new BKTree(levenshtein_distance);
             Object.entries(index_data.index[lang]).forEach(([word, posts]) => {
-                tree.add(word, posts);
+                const ansi_word = get_ansi_word(word);
+                tree.add(ansi_word, posts);
             });
-            search_index[lang] = tree;
+            search_index.content_index[lang] = tree;
         }
+
+        let title_words = new Map;
+
+        for (let post_index = 0; post_index < index_data.posts.length; post_index++) {
+            const post_title = index_data.posts[post_index].title;
+
+            search_index.ansi_titles.push(to_ansi(post_title));
+
+            const words = get_ansi_words(post_title);
+            words.forEach((word) => {
+                if (title_words.has(word)) {
+                    title_words.get(word).push(post_index);
+                } else {
+                    title_words.set(word, [post_index]);
+                }
+            });
+        }
+
+        title_words.forEach((posts, word) => {
+            search_index.title_index.add(word, posts);
+        });
     }
 
     return search_index;
 }
 
-function search_word_index(query, index) {
-    let words = query.split(' ');
+// Max distance for each word length
+function get_distance(word) {
+    return Math.max(Math.floor(word.length / 3), 1);
+}
+
+function get_letter_ansi_map() {
+    const ansi_map = {
+        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+        'à': 'a', 'è': 'e', 'ì': 'i', 'ò': 'o', 'ù': 'u',
+        'ä': 'a', 'ë': 'e', 'ï': 'i', 'ö': 'o', 'ü': 'u',
+        'â': 'a', 'ê': 'e', 'î': 'i', 'ô': 'o', 'û': 'u',
+        'ç': 'c', 'ñ': 'n',
+        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
+        'À': 'A', 'È': 'E', 'Ì': 'I', 'Ò': 'O', 'Ù': 'U',
+        'Ä': 'A', 'Ë': 'E', 'Ï': 'I', 'Ö': 'O', 'Ü': 'U',
+        'Â': 'A', 'Ê': 'E', 'Î': 'I', 'Ô': 'O', 'Û': 'U',
+        'Ç': 'C', 'Ñ': 'N'
+    };
+    return ansi_map;
+}
+
+function get_ansi_map() {
+    const ansi_map = get_letter_ansi_map();
+    const special_chars = {'·': ''};
+    return { ...ansi_map, ...special_chars };
+}
+
+function to_ansi(str) {
+    const ansi_map = get_letter_ansi_map();
+    return str.replace(new RegExp(/./, 'g'), (char) => ansi_map[char] || char);
+}
+
+function get_ansi_word(word) {
+    const ansi_map = get_ansi_map();
+    const special_chars = Object.keys(ansi_map).join('');
+    const valid_chars = 'a-zA-Z0-9' + special_chars;
+    return word.replace(new RegExp(`[^${valid_chars}]`, 'g'), '')
+        .replace(new RegExp(/./, 'g'), (char) => ansi_map[char] || char);
+}
+
+function get_ansi_words(query) {
+    const ansi_map = get_ansi_map();
+    const special_chars = Object.keys(ansi_map).join('');
+    const valid_chars = 'a-zA-Z0-9' + special_chars;
+    words = new Set(query
+        .replace(new RegExp(`[^${valid_chars}]`, 'g'), ' ')
+        .replace(new RegExp(/./, 'g'), (char) => ansi_map[char] || char)
+        .split(/\s+/)
+        .filter(word => word.length >= 2 && !(/^\d+$/.test(word))));
+    return words;
+}
+
+function search_title_list(words, title_list) {
+    let results = new Map; // { post_index: score, ... }
+    for (let i = 0; i < title_list.length; i++) {
+        let title = title_list[i];
+        let score = 0;
+        words.forEach(function (word) {
+            if (title.includes(word)) {
+                score += 1;
+            }
+        });
+        if (score > 0) {
+            results.set(i, score);
+        }
+    }
+    return results;
+}
+
+function search_title_index(words, index) {
+    let results = []; // [ Node, ... ]
+
+    words.forEach(function (word) {
+        let candidates = index.search(word, get_distance(word));
+        results = results.concat(candidates);
+    });
+
+    let post_results = new Map; // { post_index: score, ... }
+    results.forEach((word_node) => {
+        let score = word_node.score;
+        word_node.value.forEach((post_index) => {
+            if (post_results.has(post_index)) {
+                post_results.set(post_index, post_results.get(post_index) + score);
+            } else {
+                post_results.set(post_index, score);
+            }
+        });
+    });
+
+    return post_results;
+}
+
+function search_content_index(words, index) {
     let results = new Map; // { lang: [ Node, ... ], ... }
 
-    // Max distance for each word length
-    const get_distance = (word) => Math.min(Math.floor(word.length / 3), 1);
-
-    for (var lang in index) {
-        var tree = index[lang];
+    for (let lang in index) {
+        let tree = index[lang];
         words.forEach(function (word) {
-            var candidates = tree.search(word, get_distance(word));
+            let candidates = tree.search(word, get_distance(word));
             candidates.forEach(function (candidate) {
                 if (results.has(lang)) {
                     results.get(lang).push(candidate);
@@ -180,23 +303,17 @@ function search_word_index(query, index) {
     // Group the results per post index and count the number of occurrences and their distances.
     // The indexes refer to the post index in search_index["posts"].
 
-    var post_results = new Map; // { post_index: { word: { count: ..., distance: ... }, ... }, ... }
+    let post_results = new Map; // { post_index: score, ... }
     results.forEach((results, lang) => {
         results.forEach((word_node) => {
-            let word = word_node.word;
-            var score = word_node.score;
+            let score = word_node.score;
             word_node.value.forEach((result) => {
-                var post_index = result[0];
-                var count = result[1];
+                let post_index = result[0];
 
                 if (post_results.has(post_index)) {
-                    if (post_results.get(post_index).has(word)) {
-                        post_results.get(post_index).get(word).count += count;
-                    } else {
-                        post_results.get(post_index).set(word, { count: count, score: score });
-                    }
+                    post_results.set(post_index, post_results.get(post_index) + score);
                 } else {
-                    post_results.set(post_index, new Map([[word, { count: count, score: score }]]));
+                    post_results.set(post_index, score);
                 }
             });
         });
