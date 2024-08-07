@@ -57,7 +57,7 @@ module StaticSearch
                 words.each do |word, count|
                     index[lang] ||= {}
                     index[lang][word] ||= []
-                    index[lang][word] << [post_index, count]
+                    index[lang][word] << post_index
                 end
             end
 
