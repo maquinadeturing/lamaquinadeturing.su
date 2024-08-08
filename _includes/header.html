@@ -18,17 +18,17 @@
         </ul>
     </nav>
 
-    <nav itemscope="" itemtype="http://schema.org/SiteNavigationElement" class="element__frame">
-        <p class="bar__title">
-            {{ 'Topics' | localize: page.lang }} </p>
+    <nav itemscope="" itemtype="http://schema.org/SiteNavigationElement" class="element__frame" id="mobile-window">
+        <p class="bar__title mobile-media">{{ 'Menu' | localize: page.lang }}</p>
+
         <a id="nav-toggle" class="nav-slide-button" href="#"><span></span></a>
 
         <ul id="primary-menu" class="pull clear">
-            {% for category_group_pair in site.data.categories %}
-                {% assign categories = category_group_pair[1] | where: 'lang', page.lang %}
-                {% for category in categories %}
-                <li class="menu-item"><a href="{{ category.url }}">{{ category.title }}</a></li>
-                {% endfor %}
+            <li class="menu-item mobile-media"><span>{{ page.lang }}</span></li>
+            {% for lang in site.languages %}
+                {% if lang != page.lang %}
+                    <li class="menu-item mobile-media"><a href="{{ site.url | append: '/' | append: lang }}">{{ lang }}</a></li>
+                {% endif %}
             {% endfor %}
 
             <li>
@@ -40,12 +40,16 @@
                     <input type="submit" class="search-submit" value="Search">
                 </div>
             </li>
+
+            {% for category_group_pair in site.data.categories %}
+                {% assign categories = category_group_pair[1] | where: 'lang', page.lang %}
+                {% for category in categories %}
+                <li class="menu-item desktop-media"><a href="{{ category.url }}">{{ category.title }}</a></li>
+                {% endfor %}
+            {% endfor %}
         </ul>
 
-        <ul class="search-results hidden">
-            <li><a href="#">Title 1</a></li>
-            <li><a href="#">Title 2</a></li>
-        </ul>
+        <ul class="search-results hidden"></ul>
     </nav>
 
     {% if site.mastodon_username %}
