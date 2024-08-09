@@ -34,7 +34,7 @@ module StaticSearch
                 valid_chars = 'a-zA-Z0-9áéíóúàèìòùäëïöüâêîôûçñÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÂÊÎÔÛÇÑ·'
                 text_content = text_content.gsub(/[^#{valid_chars}]/, ' ')
 
-                words = text_content.downcase.split(' ')
+                words = text_content.downcase.split(/\s+/)
                     .filter { |word| word.length > 1 }
                     .filter { |word| !word.match?(/^\d+$/) }
                     .filter { |word| !stopwords[lang].include?(word) }

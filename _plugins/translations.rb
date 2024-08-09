@@ -288,15 +288,18 @@ module Jekyll
                 match = input.scan(param_pattern)
 
                 # Verify that the matched parameters are exactly `title` and `uuid`
-                raise 'Invalid tag parameters, expected title and uuid' if match.map { |m| m[0] }.to_set != ['title', 'uuid'].to_set
+                raise 'Invalid tag parameters, expected "title" and "uuid", optionally "lang"' unless match.map { |m| m[0] }.to_set <= ['title', 'uuid', 'lang'].to_set
 
                 # Assign the values to instance variables, removing the single quotes if present
                 @title = match.find { |m| m[0] == 'title' }[1].gsub("'", '')
                 @uuid = match.find { |m| m[0] == 'uuid' }[1].gsub("'", '')
+                @lang = match.find { |m| m[0] == 'lang' }&.[](1)&.gsub("'", '')
             end
 
             def render(context)
-                include_tag = "{% include link.html title='#{@title}' post_uuid='#{@uuid}' %}"
+                include_tag = "{% include link.html title='#{@title}' post_uuid='#{@uuid}'"
+                include_tag += " lang='#{@lang}'" unless @lang.nil?
+                include_tag += " %}"
                 parsed_tag = Liquid::Template.parse(include_tag)
                 parsed_tag.render(context)
             end
