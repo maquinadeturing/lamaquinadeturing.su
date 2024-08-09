@@ -1,5 +1,4 @@
 ---
-layout: post
 uuid: 28623ef9-070a-464c-889c-f5a42fac3cd4
 title:  "“Cybernetics” (in A Dictionary of Philosophy, 1967)"
 date:   2024-07-27 19:00:00 +0200

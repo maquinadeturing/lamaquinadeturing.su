@@ -1,5 +1,4 @@
 ---
-layout: post
 uuid: b68e41e8-9b96-4f53-92d0-7c831298858c
 title:  "Cuando la inteligencia artificial desplazó la cibernética"
 date:   2020-05-01 12:00:00 +0200

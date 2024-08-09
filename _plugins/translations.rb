@@ -14,6 +14,9 @@ module Localization
                 unless post['lang']
                     if post.path =~ %r{_posts/(\w{2})/}
                         post.data['lang'] = $1
+                        if post.data['layout'].nil? then
+                            post.data['layout'] = 'post'
+                        end
                     end
                 end
 

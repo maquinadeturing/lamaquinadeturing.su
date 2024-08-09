@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "Cibernética – al servicio del comunismo"
 date:   2020-05-01 13:00:00 +0200
 image:  cybernetics.png
