@@ -18,10 +18,11 @@ layout: default
             <h2 class="entry__title" itemprop="headline">{{ page.title }}</h2>
         </header>
         <div class="entry-content" itemprop="articleBody">
+            {% if page.image %}
             <div class="entry-thumbnail-single landscape" itemprop="image">
-                <img src="/assets/media/{{ page.image }}" class="attachment-large size-large wp-post-image" alt=""
-                    width="580" height="410">
+                <img src="/assets/media/{{ page.image }}" class="attachment-large size-large wp-post-image" alt="" width="580" height="410">
             </div>
+            {% endif %}
 
             {% assign translations = page.uuid | translations: page.lang %}
             {% if translations != empty %}

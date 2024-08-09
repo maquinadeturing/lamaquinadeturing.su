@@ -19,8 +19,10 @@
             <a href="{{ post.url }}">
                 <h3 class="entry__title" itemprop="headline"><span>{{ post.title }}</span></h3>
             </a>
-        </header><a href="{{ post.url }}" class="entry-thumbnail">
-            <img src="/assets/media/{{ post.image }}"></a>
+        </header>
+        {% if post.image %}
+        <a href="{{ post.url }}" class="entry-thumbnail"><img src="/assets/media/{{ post.image }}"></a>
+        {% endif %}
 
         <div class="clear"></div>
 
