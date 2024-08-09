@@ -39,7 +39,7 @@ module StaticSearch
                     .filter { |word| !word.match?(/^\d+$/) }
                     .filter { |word| !stopwords[lang].include?(word) }
                     .sort
-                    .tally
+                    .uniq
 
                 if words.length == 0 then
                     next
@@ -56,8 +56,13 @@ module StaticSearch
 
                 words.each do |word, count|
                     index[lang] ||= {}
-                    index[lang][word] ||= []
-                    index[lang][word] << post_index
+                    if index[lang][word].nil? then
+                        index[lang][word] = post_index
+                    elsif index[lang][word].is_a?(Array) then
+                        index[lang][word] << post_index
+                    else
+                        index[lang][word] = [index[lang][word], post_index]
+                    end
                 end
             end
 
