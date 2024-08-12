@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ page.lang }}">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta charset="UTF-8">
@@ -49,8 +49,8 @@
 	</style>
 
 	<script>
-		var page_lang = "{{ page.lang }}";
-		var site_languages = [{% for lang in site.languages %}"{{ lang }}",{% endfor %}];
+		const page_lang = "{{ page.lang }}";
+		const site_languages = [{% for lang in site.languages %}"{{ lang }}",{% endfor %}];
 	</script>
 	<script defer data-domain="lamaquinadeturing.su" src="https://plausible.factoria.lu/js/script.js"></script>
 	<script type="text/javascript" src="/assets/js/combined.js"></script>
