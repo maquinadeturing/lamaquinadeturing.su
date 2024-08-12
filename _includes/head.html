@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang }}">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>La màquina de Turing – cat /dev/random</title>
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
-	<link rel="dns-prefetch" href="https://s.w.org/">
-	<link rel="stylesheet" id="eightbit-style-css" href="/assets/css/style.css" type="text/css" media="all">
-	{% inline_assets %}
-
-	<script>
-		const page_lang = "{{ page.lang }}";
-		const site_languages = [{% for lang in site.languages %}"{{ lang }}",{% endfor %}];
-	</script>
-	<script defer data-domain="lamaquinadeturing.su" src="https://plausible.factoria.lu/js/script.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>La màquina de Turing – cat /dev/random</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+    <link rel="dns-prefetch" href="https://s.w.org/">
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css" media="all">
+    {% if page.layout == 'post' %}
+    <meta property="og:title" content="{{ page.title }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ page.url | absolute_url }}" />
+    {% if page.image %}
+    <meta property="og:image" content="{{ page.image | image_path | absolute_url }}" />
+    {% endif %}
+    {% elsif page.layout == 'home' %}
+    <meta property="og:title" content="{{ site.title }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ site.url | absolute_url }}" />
+    {% endif %}
+    {% inline_assets %}
+    <script>
+        const page_lang = "{{ page.lang }}";
+        const site_languages = {{ site.languages | jsonify }};
+    </script>
+    <script defer data-domain="lamaquinadeturing.su" src="https://plausible.factoria.lu/js/script.js"></script>
 </head>

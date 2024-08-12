@@ -48,10 +48,16 @@ assets:
 
 images:
   source: assets/media
-  sizes: [ 478, 618, 698, 1078 ]
+  sizes: [
+    478,
+    618,
+    698,
+    1078,
+    1200, # OG image
+  ]
   format:
     type: jpeg
-    quality: 90
+    quality: 85
 
 # Exclude from processing.
 # The following items will not be processed, by default.

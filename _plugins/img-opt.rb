@@ -45,8 +45,19 @@ module Jekyll
     end
 
     module ImageOptFilter
+        def image_path(image_file_name)
+            srcset_renderer = ImageSrcsetRenderer.new(@context.registers[:site], image_file_name)
+            srcset_renderer.path
+        end
+
         def srcset(image_file_name, *sizes)
-            site = @context.registers[:site]
+            srcset_renderer = ImageSrcsetRenderer.new(@context.registers[:site], image_file_name)
+            srcset_renderer.render_srcset(sizes)
+        end
+    end
+
+    class ImageSrcsetRenderer
+        def initialize(site, image_file_name)
             image_config = site.config['images']
             if image_config.nil? then
                 Jekyll.logger.error "ImageProcessor", "No image configuration found"
@@ -60,23 +71,36 @@ module Jekyll
             end
 
             image_base_dir = File.dirname(image_file)
-            image_base_path = File.join('/', Pathname.new(image_base_dir).relative_path_from(Pathname.new(site.source)).to_s)
-            image_base_name = File.basename(image_file, '.*')
-            image_ext = if image_config['format']['type'] == 'jpeg' then
+            @image_base_path = File.join('/', Pathname.new(image_base_dir).relative_path_from(Pathname.new(site.source)).to_s)
+            @image_base_name = File.basename(image_file, '.*')
+            @image_ext = if image_config['format']['type'] == 'jpeg' then
                 'jpg'
             else
                 Jekyll.logger.error "ImageProcessor", "Unsupported image format: #{image_config['format']['type']}"
                 return
             end
 
-            image_original_path = File.join(image_base_path, image_file_name)
+            @image_original_path = File.join(@image_base_path, image_file_name)
+        end
 
+        def path_from_size(size)
+            File.join(@image_base_path, "#{@image_base_name}_opt#{size}.#{@image_ext}")
+        end
+
+        def path
+            @image_original_path
+        end
+
+        def render_src
+            "src=\"#{@image_original_path}\""
+        end
+
+        def render_srcset(sizes)
             srcset_values = sizes.map do |size|
-                image_path = File.join(image_base_path, "#{image_base_name}_opt#{size}.#{image_ext}")
-                "#{image_path} #{size}w"
+                "#{path_from_size(size)} #{size}w"
             end.join(', ')
 
-            "src=\"#{image_original_path}\" srcset=\"#{srcset_values}\""
+            "src=\"#{@image_original_path}\" srcset=\"#{srcset_values}\""
         end
     end
 end
