@@ -1,0 +1,68 @@
+html {
+    font-size: 20px;
+    --font-title: "Pixelar", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: "Barlow", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-size-18: .9rem;
+    --color-text: hsl(0, 0%, 0%);
+    --color-indifferent: hsl(0, 0%, 40%);
+    --color-accent: hsl(120, 95%, 42%);
+    --color-title: hsl(285, 4%, 21%);
+    --color-border: hsl(285, 4%, 21%);
+    --color-bg: hsl(0, 0%, 100%);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-size: var(--font-size-18);
+    font-family: var(--font-body);
+    line-height: 1.8;
+    color: var(--color-text);
+    overflow-x: hidden;
+    font-weight: normal;
+    background: url("/assets/img/dots.svg") var(--color-bg);
+    background-size: 2px 2px;
+    background-attachment: fixed;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-title);
+    color: var(--color-title);
+    margin: 1em 0 .5em 0;
+    line-height: 1.4;
+    font-weight: normal;
+}
+
+h1 {
+    font-size: 2.4rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.7rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+h5 {
+    font-size: 1.3rem;
+}
+
+h6 {
+    font-size: 1.1rem;
+}

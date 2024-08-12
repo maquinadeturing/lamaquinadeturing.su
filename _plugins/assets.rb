@@ -1,0 +1,126 @@
+# require 'uglifier'
+
+module Jekyll
+    class Assets < Generator
+        safe true
+
+        def generate(site)
+            assets_config_entries = site.config['assets'] || []
+
+            for assets_config in assets_config_entries
+                if assets_config['source'] == nil || assets_config['output'] == nil then
+                    Jekyll.logger.error 'Assets:', 'source and output must be defined'
+                    next
+                end
+
+                source_file_list = if !assets_config['source']['files'].nil? then
+                    assets_config['source']['files'].map { |file| File.join(site.source, file) }
+                elsif !assets_config['source']['directory'].nil? then
+                    Dir.glob(File.join(site.source, assets_config['source']['directory'], '*'))
+                end
+
+                if source_file_list.nil? then
+                    Jekyll.logger.error 'Assets:', 'source must be defined as files or directory'
+                    next
+                end
+
+                asset_type = assets_config['type'].downcase
+
+                if assets_config['output'] == 'deferred' then
+                    source_path_list = source_file_list
+                        .map { |file| Pathname.new(file).relative_path_from(Pathname.new(site.source)).to_s }
+                        .map { |file| '/' + file }
+                    Jekyll.logger.info 'Assets:', "Deferred #{source_path_list.size} #{asset_type.upcase} files"
+                    site.data["deferred_#{asset_type}"] ||= []
+                    site.data["deferred_#{asset_type}"] += source_path_list
+                    next
+                end
+
+                combined = source_file_list.map { |file| "/* #{File.basename(file)} */\n#{File.read(file)}" }.join("\n")
+
+                if assets_config['output'] == 'inlined' then
+                    Jekyll.logger.info 'Assets:', "Inlined #{source_file_list.size} #{asset_type.upcase} files with #{combined.size / 1024} KB"
+                    site.data["inlined_#{asset_type}"] = combined
+                else
+                    site.pages << Jekyll::PageWithoutAFile.new(site, __dir__, "", assets_config['output']).tap do |file|
+                        file.content = combined
+                        file.data.merge!(
+                            "layout"     => nil,
+                            "sitemap"    => false,
+                        )
+                        Jekyll.logger.info 'Assets:', "Combined #{source_file_list.size} #{asset_type.upcase} files with #{combined.size / 1024} KB"
+
+                        file.output
+                    end
+
+                    site.data["deferred_#{asset_type}"] ||= []
+                    site.data["deferred_#{asset_type}"] << assets_config['output']
+                end
+
+                site.static_files.reject! { |file| source_file_list.include?(file.path) }
+            end
+        end
+    end
+
+    module InlineAssets
+        class InlineAssetsTag < Liquid::Tag
+            def initialize(tag_name, text, tokens)
+                super
+            end
+
+            def render(context)
+                site = context.registers[:site]
+
+                asset_types = ['css', 'js']
+
+                asset_types.map do |asset_type|
+                    content = []
+                    if site.data["inlined_#{asset_type}"] then
+                        content << render_inline(site.data["inlined_#{asset_type}"], asset_type)
+                    end
+                    if site.data["deferred_#{asset_type}"] then
+                        content << render_deferred(site.data["deferred_#{asset_type}"], asset_type)
+                    end
+                    content.join("\n")
+                end.join("\n")
+            end
+
+            def render_inline(content, asset_type)
+                if asset_type == 'css' then
+                    "<style>#{content}</style>"
+                elsif asset_type == 'js' then
+                    "<script>#{content}</script>"
+                else
+                    Jekyll.logger.error 'InlineAssets:', "Unknown asset type #{asset_type}"
+                    content
+                end
+            end
+
+            def render_deferred(asset_paths, asset_type)
+                if asset_type == 'css' then
+                    load_statements = asset_paths.map { |asset_path| "loadStyleSheet('#{asset_path}');" }.join("\n")
+                    "<script>
+function loadStyleSheet(src){
+    if (document.createStyleSheet) document.createStyleSheet(src);
+    else {
+        var stylesheet = document.createElement('link');
+        stylesheet.href = src;
+        stylesheet.rel = 'stylesheet';
+        stylesheet.type = 'text/css';
+        document.getElementsByTagName('head')[0].appendChild(stylesheet);
+    }
+}
+#{load_statements}
+</script>"
+                elsif asset_type == 'js' then
+                    asset_paths.map { |asset_path| "<script defer src=\"#{asset_path}\"></script>" }.join("\n")
+                else
+                    Jekyll.logger.error 'InlineAssets:', "Unknown asset type #{asset_type}"
+                    ''
+                end
+            end
+        end
+    end
+end
+
+Liquid::Template.register_tag('inline_assets', Jekyll::InlineAssets::InlineAssetsTag)

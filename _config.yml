@@ -35,6 +35,17 @@ languages:
 plugins:
   - jekyll-feed
 
+assets:
+  - type: css
+    source: { files: [ assets/css/inlined.css ] }
+    output: inlined
+  - type: css
+    source: { files: [ assets/css/highlight.css, assets/css/fonts.css ] }
+    output: deferred
+  - type: js
+    source: { directory: assets/js }
+    output: /assets/js/combined.js
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

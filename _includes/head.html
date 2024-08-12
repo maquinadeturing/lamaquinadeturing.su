@@ -10,48 +10,11 @@
 	<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
 	<link rel="dns-prefetch" href="https://s.w.org/">
 	<link rel="stylesheet" id="eightbit-style-css" href="/assets/css/style.css" type="text/css" media="all">
-	<link rel="stylesheet" id="fonts-css" href="/assets/css/fonts.css" type="text/css" media="all">
-	<style type="text/css" id="wp-custom-css">
-		@media screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 400px),
-		screen and (min-resolution: 192dpi) and (max-width: 400px),
-		screen and (min-resolution: 2dppx) and (max-width: 400px),
-		screen and (max-resolution: 1dppx) and (max-width: 400px) {
-
-			article p {
-				line-height: 1.2;
-			}
-
-			.grid__single .grid__item>article {
-				padding: 1rem;
-			}
-
-		}
-
-		pre {
-			max-width: 650px;
-			overflow: auto;
-		}
-	</style>
-	<style type="text/css" media="screen">
-		.footnote_tooltip {
-			display: none;
-			padding: 12px;
-			font-size: 13px;
-			background-color: #ffffff;
-			border-width: 1px;
-			border-style: solid;
-			border-color: #cccc99;
-			border-radius: 3px;
-			-webkit-box-shadow: 2px 2px 11px #666666;
-			-moz-box-shadow: 2px 2px 11px #666666;
-			box-shadow: 2px 2px 11px #666666;
-		}
-	</style>
+	{% inline_assets %}
 
 	<script>
 		const page_lang = "{{ page.lang }}";
 		const site_languages = [{% for lang in site.languages %}"{{ lang }}",{% endfor %}];
 	</script>
 	<script defer data-domain="lamaquinadeturing.su" src="https://plausible.factoria.lu/js/script.js"></script>
-	<script defer type="text/javascript" src="/assets/js/combined.js"></script>
 </head>
