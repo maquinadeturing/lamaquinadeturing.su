@@ -19,9 +19,17 @@ layout: default
         </header>
         <div class="entry-content" itemprop="articleBody">
             {% if page.image %}
+            {% if page.image_caption %}
+            {% assign image_alt = page.image_caption | markdownify | strip_html %}
+            {% else %}
+            {% assign image_alt = page.title %}
+            {% endif %}
             <div class="entry-thumbnail-single landscape" itemprop="image">
-                <img src="/assets/media/{{ page.image }}" class="attachment-large size-large wp-post-image" alt="" width="580" height="410">
+                <img src="/assets/media/{{ page.image }}" class="attachment-large size-large wp-post-image" alt="{{ image_alt | strip | escape }}" width="580" height="410">
             </div>
+            {% if page.image_caption %}
+            <div class="entry-thumbnail-caption">{{ page.image_caption | markdownify }}</div>
+            {% endif %}
             {% endif %}
 
             {% assign translations = page.uuid | translations: page.lang %}

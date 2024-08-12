@@ -21,7 +21,12 @@
             </a>
         </header>
         {% if post.image %}
-        <a href="{{ post.url }}" class="entry-thumbnail"><img src="/assets/media/{{ post.image }}"></a>
+        {% if post.image_caption %}
+        {% assign image_alt = post.image_caption | markdownify | strip_html %}
+        {% else %}
+        {% assign image_alt = post.title %}
+        {% endif %}
+        <a href="{{ post.url }}" class="entry-thumbnail"><img src="/assets/media/{{ post.image }}" alt="{{ image_alt }}"></a>
         {% endif %}
 
         <div class="clear"></div>

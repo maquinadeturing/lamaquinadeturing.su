@@ -87,7 +87,8 @@ html {
     --font-title: "Pixelar", -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: "Barlow", -apple-system, BlinkMacSystemFont, sans-serif;
     --font-size-18: .9rem;
-    --color-text: hsl(0, 0%, 25%);
+    --color-text: hsl(0, 0%, 0%);
+    --color-indifferent: hsl(0, 0%, 40%);
     --color-accent: hsl(120, 95%, 42%);
     --color-title: hsl(285, 4%, 21%);
     --color-border: hsl(285, 4%, 21%);
@@ -747,6 +748,12 @@ a.entry-thumbnail {
 .entry-thumbnail-single.landscape {
     max-width: none;
     float: none;
+}
+
+.entry-thumbnail-caption p {
+    font-size: .7rem;
+    color: var(--color-indifferent);
+    margin: 0;
 }
 
 .wrap {

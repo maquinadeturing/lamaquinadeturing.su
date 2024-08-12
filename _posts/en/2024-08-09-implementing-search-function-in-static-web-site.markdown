@@ -2,10 +2,9 @@
 title:  Implementing the search function in a static web site
 date:   2024-08-09 13:00:00 +0200
 image:  search.jpg
+image_caption: "Cuff's solar microscope in [\"Mikroskopische Gemüths - und Augen-Ergötzung\"](https://publicdomainreview.org/collection/microscopic-delights/), vol. 3, by M. F. Ledermüller (1759–63)."
 categories: Web
 ---
-
-_Cuff's solar microscope in ["Mikroskopische Gemüths - und Augen-Ergötzung"](https://publicdomainreview.org/collection/microscopic-delights/), vol. 3, by M. F. Ledermüller (1759–63)._
 
 Static web sites are the best. They are fast, lightweight, safe and content-centric. However, not having a server comes with its sacrifices. I can go without forms, user accounts or comments, but the thing I miss the most is _searching_.
 
