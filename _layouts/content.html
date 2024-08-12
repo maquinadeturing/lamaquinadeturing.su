@@ -25,7 +25,7 @@ layout: default
             {% assign image_alt = page.title %}
             {% endif %}
             <div class="entry-thumbnail-single landscape" itemprop="image">
-                <img src="/assets/media/{{ page.image }}" class="attachment-large size-large wp-post-image" alt="{{ image_alt | strip | escape }}" width="580" height="410">
+                <img {{ page.image | srcset:698,1078 }} sizes="(max-width: 800px) 698px, (max-width: 1200px) 1078px, 698px" class="attachment-large size-large wp-post-image" alt="{{ image_alt | strip | escape }}">
             </div>
             {% if page.image_caption %}
             <div class="entry-thumbnail-caption">{{ page.image_caption | markdownify }}</div>

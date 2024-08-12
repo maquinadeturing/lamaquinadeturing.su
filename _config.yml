@@ -46,6 +46,13 @@ assets:
     source: { directory: assets/js }
     output: /assets/js/combined.js
 
+images:
+  source: assets/media
+  sizes: [ 478, 618, 698, 1078 ]
+  format:
+    type: jpeg
+    quality: 90
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

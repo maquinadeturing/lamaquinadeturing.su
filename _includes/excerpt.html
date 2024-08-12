@@ -26,7 +26,7 @@
         {% else %}
         {% assign image_alt = post.title %}
         {% endif %}
-        <a href="{{ post.url }}" class="entry-thumbnail"><img src="/assets/media/{{ post.image }}" alt="{{ image_alt }}"></a>
+        <a href="{{ post.url }}" class="entry-thumbnail"><img {{ post.image | srcset:478,618 }} sizes="(max-width: 800px) 478px, (max-width: 1200px) 618px, 478px" alt="{{ image_alt }}"></a>
         {% endif %}
 
         <div class="clear"></div>

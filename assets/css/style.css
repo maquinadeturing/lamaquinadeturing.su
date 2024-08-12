@@ -666,7 +666,6 @@ a.entry-thumbnail {
 .entry-thumbnail-single {
     max-width: 400px;
     float: left;
-    padding: 0 2rem 1rem 0;
 }
 
 .entry-thumbnail-single.landscape {
