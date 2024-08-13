@@ -20,8 +20,7 @@
 
 title: La màquina de Turing
 email: your-email@example.com
-description: >- # this means to ignore newlines until "baseurl:"
-  cat /dev/random > /dev/null
+description: cat /dev/random
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://lamaquinadeturing.su" # the base hostname & protocol for your site, e.g. http://example.com
 mastodon_username: "@urixturing@mastodont.cat"
