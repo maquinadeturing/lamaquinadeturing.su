@@ -52,7 +52,7 @@ images:
     618,
     698,
     1078,
-    1200, # OG image
+    {size: 1200, quality: 75}, # OG image
   ]
   format:
     type: jpeg

@@ -11,32 +11,66 @@ module Jekyll
                     return
                 end
 
-                site.config['images'] ||= { "type": "jpeg", "quality": 85 }
+                site.config['images'] ||= {}
+                site.config['images']['source'] ||= 'images'
+                site.config['images']['format'] ||= {}
+                site.config['images']['format']['type'] ||= 'jpeg'
+                site.config['images']['format']['quality'] ||= 85
+                image_sizes = (site.config['images']['sizes'] || []).map do |size|
+                    if size.is_a?(String) || size.is_a?(Integer) then
+                        {'size' => size, 'quality' => site.config['images']['format']['quality']}
+                    else
+                        size
+                    end
+                end
 
                 image_files = Dir.glob(File.join(site.config['images']['source'], '*'))
                     .map { |file| File.join(site.source, file) }
-                    .reject { |file| site.config['images']['sizes'].any? { |size| File.basename(file, '.*').end_with?("opt#{size}") } }
+                    .reject { |file| File.basename(file, '.*').end_with?("_opt") }
+                    .reject { |file| image_sizes.map { |size_obj| size_obj['size'] }.any? do |size|
+                        File.basename(file, '.*').end_with?("_opt#{size}")
+                    end }
 
                 image_files.each do |image_file|
-                    image = MiniMagick::Image.open(image_file)
+                    image_base_dir = File.dirname(image_file)
+                    image_base_name = File.basename(image_file, '.*')
+                    image_ext = if site.config['images']['format']['type'] == 'jpeg' then
+                        'jpg'
+                    else
+                        Jekyll.logger.error "ImageProcessor", "Unsupported image format: #{site.config['images']['format']['type']}"
+                        next
+                    end
 
-                    site.config['images']['sizes'].each do |image_size|
-                        image_base_dir = File.dirname(image_file)
-                        image_base_name = File.basename(image_file, '.*')
-                        image_ext = if site.config['images']['format']['type'] == 'jpeg' then
-                            'jpg'
-                        else
-                            Jekyll.logger.error "ImageProcessor", "Unsupported image format: #{site.config['images']['format']['type']}"
-                            next
-                        end
+                    MiniMagick::Image.open(image_file).tap do |image|
+                        output_file = File.join(image_base_dir, "#{image_base_name}_opt.#{image_ext}")
+
+                        next if (File.exist?(output_file) && (
+                            File.mtime(output_file) > File.mtime(image_file) &&
+                            File.mtime(output_file) > File.mtime(File.join(site.source, '_config.yml'))
+                            ))
+
+                        image.format site.config['images']['format']['type']
+                        image.quality site.config['images']['format']['quality']
+                        image.strip # Remove any metadata
+                        image.write output_file
+                    end
+
+                    image_sizes.each do |image_size_obj|
+                        image_size = image_size_obj['size']
+                        image = MiniMagick::Image.open(image_file)
+
                         output_file = File.join(image_base_dir, "#{image_base_name}_opt#{image_size}.#{image_ext}")
 
-                        next if File.exist?(output_file) && File.mtime(output_file) > File.mtime(image_file)
+                        next if (File.exist?(output_file) && (
+                            File.mtime(output_file) > File.mtime(image_file) &&
+                            File.mtime(output_file) > File.mtime(File.join(site.source, '_config.yml'))
+                            ))
 
                         image.resize image_size
 
                         image.format site.config['images']['format']['type']
-                        image.quality site.config['images']['format']['quality']
+                        image.quality image_size_obj['quality']
+                        image.strip # Remove any metadata
                         image.write output_file
                     end
                 end
@@ -45,9 +79,13 @@ module Jekyll
     end
 
     module ImageOptFilter
-        def image_path(image_file_name)
+        def image_path(image_file_name, size)
             srcset_renderer = ImageSrcsetRenderer.new(@context.registers[:site], image_file_name)
-            srcset_renderer.path
+            if size.nil? then
+                srcset_renderer.path
+            else
+                srcset_renderer.path_from_size(size)
+            end
         end
 
         def srcset(image_file_name, *sizes)
@@ -80,7 +118,7 @@ module Jekyll
                 return
             end
 
-            @image_original_path = File.join(@image_base_path, image_file_name)
+            @image_original_path = File.join(@image_base_path, "#{@image_base_name}_opt.#{@image_ext}")
         end
 
         def path_from_size(size)
