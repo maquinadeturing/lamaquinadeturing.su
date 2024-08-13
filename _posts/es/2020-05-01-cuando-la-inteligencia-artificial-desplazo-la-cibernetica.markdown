@@ -3,6 +3,10 @@ uuid: b68e41e8-9b96-4f53-92d0-7c831298858c
 title:  "Cuando la inteligencia artificial desplazó la cibernética"
 date:   2020-05-01 12:00:00 +0200
 image:  darthsmouth.jpg
+image_caption: >
+  Organizadores del Dartmouth Summer Research Project on Artificial Intelligence de 1956.
+  De izquierda a derecha, al fondo Oliver Selfridge, Nathaniel Rochester, Marvin Minsky y John McCarthy,
+  y al frente Ray Solomonoff, Peter Milner y Claude Shannon.
 categories: Cibernética
 ---
 
