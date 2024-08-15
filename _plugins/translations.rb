@@ -242,6 +242,11 @@ module Jekyll
             end
         end
 
+        def translation_url(uuid, lang)
+            post = find_prefered_translation(uuid, lang)
+            return post.url if post
+        end
+
         def get_category_by_name(category_name, lang)
             site = @context.registers[:site]
             site.data['categories'][lang].find { |c| c.data['title'] == category_name }
