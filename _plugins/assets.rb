@@ -7,6 +7,8 @@ module Jekyll
         def generate(site)
             assets_config_entries = site.config['assets'] || []
 
+            already_processed = Set.new
+
             for assets_config in assets_config_entries
                 if assets_config['source'] == nil || assets_config['output'] == nil then
                     Jekyll.logger.error 'Assets:', 'source and output must be defined'
@@ -17,6 +19,7 @@ module Jekyll
                     assets_config['source']['files'].map { |file| File.join(site.source, file) }
                 elsif !assets_config['source']['directory'].nil? then
                     Dir.glob(File.join(site.source, assets_config['source']['directory'], '*'))
+                        .reject { |file| already_processed.include?(file) }
                 end
 
                 if source_file_list.nil? then
@@ -24,15 +27,17 @@ module Jekyll
                     next
                 end
 
+                already_processed.merge(source_file_list)
+
                 asset_type = assets_config['type'].downcase
 
-                if assets_config['output'] == 'deferred' then
+                if assets_config['output'] == 'linked' then
                     source_path_list = source_file_list
                         .map { |file| Pathname.new(file).relative_path_from(Pathname.new(site.source)).to_s }
                         .map { |file| '/' + file }
-                    Jekyll.logger.info 'Assets:', "Deferred #{source_path_list.size} #{asset_type.upcase} files"
-                    site.data["deferred_#{asset_type}"] ||= []
-                    site.data["deferred_#{asset_type}"] += source_path_list
+                    Jekyll.logger.info 'Assets:', "Linked #{source_path_list.size} #{asset_type.upcase} files"
+                    site.data["linked_#{asset_type}"] ||= []
+                    site.data["linked_#{asset_type}"] += source_path_list
                     next
                 end
 
@@ -75,6 +80,9 @@ module Jekyll
 
                 asset_types.map do |asset_type|
                     content = []
+                    if site.data["linked_#{asset_type}"] then
+                        content << render_linked(site.data["linked_#{asset_type}"], asset_type)
+                    end
                     if site.data["inlined_#{asset_type}"] then
                         content << render_inline(site.data["inlined_#{asset_type}"], asset_type)
                     end
@@ -85,6 +93,17 @@ module Jekyll
                 end.join("\n")
             end
 
+            def render_linked(asset_paths, asset_type)
+                if asset_type == 'css' then
+                    asset_paths.map { |asset_path| "<link rel=\"stylesheet\" href=\"#{asset_path}\">" }.join("\n")
+                elsif asset_type == 'js' then
+                    asset_paths.map { |asset_path| "<script src=\"#{asset_path}\"></script>" }.join("\n")
+                else
+                    Jekyll.logger.error 'InlineAssets:', "Unknown asset type #{asset_type}"
+                    ''
+                end
+            end
+
             def render_inline(content, asset_type)
                 if asset_type == 'css' then
                     "<style>#{content}</style>"
@@ -92,25 +111,27 @@ module Jekyll
                     "<script>#{content}</script>"
                 else
                     Jekyll.logger.error 'InlineAssets:', "Unknown asset type #{asset_type}"
-                    content
+                    ''
                 end
             end
 
             def render_deferred(asset_paths, asset_type)
                 if asset_type == 'css' then
-                    load_statements = asset_paths.map { |asset_path| "loadStyleSheet('#{asset_path}');" }.join("\n")
+                    sources = asset_paths.map { |asset_path| "'#{asset_path}'" }.join(', ')
                     "<script>
-function loadStyleSheet(src){
-    if (document.createStyleSheet) document.createStyleSheet(src);
-    else {
-        var stylesheet = document.createElement('link');
-        stylesheet.href = src;
-        stylesheet.rel = 'stylesheet';
-        stylesheet.type = 'text/css';
-        document.getElementsByTagName('head')[0].appendChild(stylesheet);
+function loadStyleSheets(...sources) {
+    for (const src of sources) {
+        if (document.createStyleSheet) document.createStyleSheet(src);
+        else {
+            var stylesheet = document.createElement('link');
+            stylesheet.href = src;
+            stylesheet.rel = 'stylesheet';
+            stylesheet.type = 'text/css';
+            document.getElementsByTagName('head')[0].appendChild(stylesheet);
+        }
     }
 }
-#{load_statements}
+loadStyleSheets(#{sources});
 </script>"
                 elsif asset_type == 'js' then
                     asset_paths.map { |asset_path| "<script defer src=\"#{asset_path}\"></script>" }.join("\n")

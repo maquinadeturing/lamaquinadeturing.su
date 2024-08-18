@@ -39,8 +39,11 @@ assets:
     source: { files: [ assets/css/inlined.css ] }
     output: inlined
   - type: css
-    source: { files: [ assets/css/highlight.css, assets/css/fonts.css ] }
-    output: deferred
+    source: { files: [ assets/css/style.css ] }
+    output: linked
+  - type: css
+    source: { directory: assets/css }
+    output: /assets/css/combined.css
   - type: js
     source: { directory: assets/js }
     output: /assets/js/combined.js
