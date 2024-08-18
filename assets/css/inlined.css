@@ -30,39 +30,23 @@ body {
     background-attachment: fixed;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: var(--font-title);
+h1, h2, h3, h4, h5, h6 {
     color: var(--color-title);
     margin: 1em 0 .5em 0;
     line-height: 1.4;
     font-weight: normal;
 }
 
-h1 {
-    font-size: 2.4rem;
-}
+h1 { font-size: 2.4rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.7rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.3rem; }
+h6 { font-size: 1.1rem; }
 
-h2 {
-    font-size: 2rem;
-}
-
-h3 {
-    font-size: 1.7rem;
-}
-
-h4 {
-    font-size: 1.5rem;
-}
-
-h5 {
-    font-size: 1.3rem;
-}
-
-h6 {
-    font-size: 1.1rem;
-}
+article h1 { font-size: 1.7rem; }
+article h2 { font-size: 1.5rem; }
+article h3 { font-size: 1.3rem; }
+article h4 { font-size: 1.1rem; }
+article h5 { font-size: 0.9rem; }
+article h6 { font-size: 0.7rem; }
