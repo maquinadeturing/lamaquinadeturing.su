@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">{% if page.layout == 'post' %}
     <title>{{ page.title }} – {{ site.title }}</title>
-    <meta property="og:title" content="{{ page.title }}" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="{{ page.url | absolute_url }}" />{% if page.image %}
-    <meta property="og:image" content="{{ page.image | image_path:1200 | absolute_url }}" />{% endif %}{% elsif page.layout == 'home' %}
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">{% if page.image %}
+    <meta property="og:image" content="{{ page.image | image_path:1200 | absolute_url }}">{% endif %}{% elsif page.layout == 'home' %}
     <title>{{ site.title }} – {{ site.description }}</title>
-    <meta property="og:title" content="{{ site.title }}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="{{ site.url | absolute_url }}" />{% elsif page.layout == 'archive' %}
+    <meta property="og:title" content="{{ site.title }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url | absolute_url }}">{% elsif page.layout == 'archive' %}
     <title>{{ 'Category' | localize: page.lang }}: {{ page.title }}</title>
-    <meta property="og:title" content="{{ 'Category' | localize: page.lang }}: {{ page.title }}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="{{ page.url | absolute_url }}" />{% endif %}
+    <meta property="og:title" content="{{ 'Category' | localize: page.lang }}: {{ page.title }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">{% endif %}
     {% inline_assets %}
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">

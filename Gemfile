@@ -33,3 +33,5 @@ gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
 gem "mini_magick", "~> 5.0"
+
+gem "nokogiri", "~> 1.16"
