@@ -23,3 +23,8 @@ article a.link-archive::after
 {
   background-image: url("/assets/img/internet_archive.svg");
 }
+
+article a.link-mastodon::after
+{
+  background-image: url("/assets/img/mastodon.svg");
+}

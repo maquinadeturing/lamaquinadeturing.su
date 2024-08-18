@@ -11,6 +11,8 @@ module Jekyll
                     link['class'] = (link['class'].to_s.split(' ') << 'link-wikipedia').join(' ')
                 elsif link['href'] =~ /archive\.org/
                     link['class'] = (link['class'].to_s.split(' ') << 'link-archive').join(' ')
+                elsif link['href'] =~ %r{^https?://[^/]+/@[\w_]+}
+                    link['class'] = (link['class'].to_s.split(' ') << 'link-mastodon').join(' ')
                 elsif link['href'].start_with?('http://', 'https://')
                     link['class'] = (link['class'].to_s.split(' ') << 'link-external').join(' ')
                 end
