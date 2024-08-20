@@ -38,6 +38,11 @@ module Localization
             languages.each do |lang|
                 site.pages << LanguagePage.new(site, lang)
             end
+
+            # Convert UUIDs to URLs in all posts
+            site.posts.docs.each do |post|
+                post.content = Localization.convert_uuid_to_url(site, post.content, post['lang'])
+            end
         end
     end
 
@@ -49,8 +54,6 @@ module Localization
             site.config['languages'].each do |lang|
                 add_category_collection(site, lang)
             end
-
-            Jekyll.logger.info "Categories: #{site.data['categories']}"
 
             # Generate the category pages for each language
             site.config['languages'].each do |lang|
@@ -203,11 +206,51 @@ module Localization
             liquid_template = Liquid::Template.parse(document.content)
             rendered_content = liquid_template.render!(site.site_payload, { registers: { site: site, page: document } })
 
+            # Convert UUID links to URLs
+            rendered_content = Localization.convert_uuid_to_url(site, rendered_content, document.data['lang'])
+
             # Convert Markdown to HTML
             markdown_converter = site.find_converter_instance(Jekyll::Converters::Markdown)
             markdown_converter.convert(rendered_content)
         end
+    end
 
+    def self.convert_uuid_to_url(site, content, post_lang)
+        uuid_regex = /\b[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\b/
+        content.gsub(/\[([^\]]+)\]\((#{uuid_regex})(\/\w{2})?\)/) do |match|
+            text = $1
+            uuid = $2
+            lang = $3&.gsub('/', '')
+
+            prefered_lang = lang || post_lang
+            post = find_prefered_translation(site, uuid, prefered_lang)
+
+            if post
+                "[#{text}](#{post.url})"
+            else
+                match
+            end
+        end.gsub(/\[(#{uuid_regex})\]/) do |match|
+            uuid = $1
+            post = find_prefered_translation(site, uuid, post_lang)
+
+            if post
+                "[#{post.data['title']}](#{post.url})"
+            else
+                match
+            end
+        end
+    end
+
+    def self.find_prefered_translation(site, uuid, lang)
+        post = site.posts.docs.find { |p| p['uuid'] == uuid && p['lang'] == lang }
+        return post if post
+
+        languages = site.config['languages']
+        for language in languages
+            post = site.posts.docs.find { |p| p['uuid'] == uuid && p['lang'] == language }
+            return post if post
+        end
     end
 end
 
@@ -281,36 +324,6 @@ module Jekyll
         end
     end
 
-    module TranslationTags
-        class LinkUuidTag < Liquid::Tag
-            def initialize(tag_name, input, tokens)
-                super
-
-                # Param is a word and value is a string enclosed in single quotes or a word without spaces
-                param_pattern = /\s*(\w+)=('[^']+'|[^' ][^ ]*)\s*/
-
-                # Match all the param=value pairs in the input string, there can be more than one like `param1=value1 param2=value2`
-                match = input.scan(param_pattern)
-
-                # Verify that the matched parameters are exactly `title` and `uuid`
-                raise 'Invalid tag parameters, expected "title" and "uuid", optionally "lang"' unless match.map { |m| m[0] }.to_set <= ['title', 'uuid', 'lang'].to_set
-
-                # Assign the values to instance variables, removing the single quotes if present
-                @title = match.find { |m| m[0] == 'title' }[1].gsub("'", '')
-                @uuid = match.find { |m| m[0] == 'uuid' }[1].gsub("'", '')
-                @lang = match.find { |m| m[0] == 'lang' }&.[](1)&.gsub("'", '')
-            end
-
-            def render(context)
-                include_tag = "{% include link.html title='#{@title}' post_uuid='#{@uuid}'"
-                include_tag += " lang='#{@lang}'" unless @lang.nil?
-                include_tag += " %}"
-                parsed_tag = Liquid::Template.parse(include_tag)
-                parsed_tag.render(context)
-            end
-        end
-    end
-
     module RaiseError
         class RaiseTag < Liquid::Tag
             def initialize(tag_name, text, tokens)
@@ -328,4 +341,3 @@ end
 
 Liquid::Template.register_filter(Jekyll::LocalizationFilter)
 Liquid::Template.register_tag('raise', Jekyll::RaiseError::RaiseTag)
-Liquid::Template.register_tag('link_uuid', Jekyll::TranslationTags::LinkUuidTag)

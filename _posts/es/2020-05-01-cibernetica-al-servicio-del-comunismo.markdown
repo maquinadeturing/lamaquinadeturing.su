@@ -6,7 +6,7 @@ image:  cybernetics.png
 categories: Cibernética
 ---
 
-_El siguiente texto es una traducción de la introducción al primer volumen de “Cibernética – al servicio del comunismo”, editado por Aksel I. Berg en 1961 en la URSS después de la restauración política de esta disciplina científica, {% link_uuid title='antes demonizada por el estalinismo' uuid=1f8fbc0d-7856-4f82-9cf1-19b2738e90fd %}._
+_El siguiente texto es una traducción de la introducción al primer volumen de “Cibernética – al servicio del comunismo”, editado por Aksel I. Berg en 1961 en la URSS después de la restauración política de esta disciplina científica, [antes demonizada por el estalinismo](1f8fbc0d-7856-4f82-9cf1-19b2738e90fd)._
 
 _Esta serie de libros contenían las actas del seminario organizado por Berg y otros cibernetistas, en el cual discutían los aspectos cientifico-técnicos de esta nueva disciplina y a la vez buscaban un cuerpo teórico adecuado a los principios comunistas._
 

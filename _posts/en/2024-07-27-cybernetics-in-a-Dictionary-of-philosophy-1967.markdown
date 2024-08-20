@@ -6,7 +6,7 @@ image:  a-dictionary-of-philosophy.jpg
 categories: Cybernetics Lzhenauka
 ---
 
-_Cybernetics entry in_ A Dictionary of Philosophy, _the influential work that reflected the political consensus in the USSR about many topics. This entry, probably based on the 1963 edition in Russian by Rozental and Yudin, reflects the post-Stalin view of cybernetics. Compare to {% link_uuid uuid=1f8fbc0d-7856-4f82-9cf1-19b2738e90fd title='this older entry' %} from a 1954 edition, where it is dubbed a "reactionary pseudoscience", "mechanicist" and "idealist". In contrast, in this edition cybernetics is "against" idealist philosophy._
+_Cybernetics entry in_ A Dictionary of Philosophy, _the influential work that reflected the political consensus in the USSR about many topics. This entry, probably based on the 1963 edition in Russian by Rozental and Yudin, reflects the post-Stalin view of cybernetics. Compare to [this older entry](1f8fbc0d-7856-4f82-9cf1-19b2738e90fd) from a 1954 edition, where it is dubbed a "reactionary pseudoscience", "mechanicist" and "idealist". In contrast, in this edition cybernetics is "against" idealist philosophy._
 
 <hr class="wp-block-separator is-style-wide">
 

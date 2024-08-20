@@ -23,13 +23,13 @@ My wishlist for a search function was:
 
 With that in mind, I started designing my own static search function. The basic idea was to generate some kind of index that would allow for static searches using Javascript.
 
-There are some nice Javascript libraries that will consume texts and provide a search function, like [Lunr](https://lunrjs.com). It even lets you [pre-build the serch index](https://lunrjs.com/guides/index_prebuilding.html), so it can be downloaded as a static JSON file. As a test, I created a Lunr JSON index with {% link_uuid title='the' uuid=1f8fbc0d-7856-4f82-9cf1-19b2738e90fd lang=es %} {% link_uuid title='three' uuid=8a9feaca-9e90-4c16-b91d-0230b5502fd9 lang=es %} {% link_uuid title='posts' uuid=b68e41e8-9b96-4f53-92d0-7c831298858c lang=es %} in Spanish in the blog, as they are the longest right now. The result is the following:
+There are some nice Javascript libraries that will consume texts and provide a search function, like [Lunr](https://lunrjs.com). It even lets you [pre-build the serch index](https://lunrjs.com/guides/index_prebuilding.html), so it can be downloaded as a static JSON file. As a test, I created a Lunr JSON index with [the](1f8fbc0d-7856-4f82-9cf1-19b2738e90fd/es) [three](8a9feaca-9e90-4c16-b91d-0230b5502fd9/es) [posts](b68e41e8-9b96-4f53-92d0-7c831298858c/es) in Spanish in the blog, as they are the longest right now. The result is the following:
 
 | Posts    | Rendered Post Size[^1] | Lunr JSON Index Size |
 | -------- | ------------------ | -------------------- |
-| {% link_uuid title='Post 1' uuid=1f8fbc0d-7856-4f82-9cf1-19b2738e90fd lang=es %} | 2.72 KB | 12.39 KB |
-| {% link_uuid title='Post 2' uuid=8a9feaca-9e90-4c16-b91d-0230b5502fd9 lang=es %} | 87.16 KB | 141.89 KB |
-| {% link_uuid title='Post 3' uuid=b68e41e8-9b96-4f53-92d0-7c831298858c lang=es %} | 3.27 KB | 15.04 KB |
+| [Post 1](1f8fbc0d-7856-4f82-9cf1-19b2738e90fd/es) | 2.72 KB | 12.39 KB |
+| [Post 2](8a9feaca-9e90-4c16-b91d-0230b5502fd9/es) | 87.16 KB | 141.89 KB |
+| [Post 3](b68e41e8-9b96-4f53-92d0-7c831298858c/es) | 3.27 KB | 15.04 KB |
 | All three posts | 93.16 KB | 158.32 KB |
 
 As it can be seen, the Lunr index grows linearly to the size of the text, but also it becomes larger than the text itself! At least for this small amount of content, it would be better to just download the text of the posts.
@@ -98,7 +98,7 @@ end
 
 Note that per each word in a given language, it maps to a list of posts referenced by an "index". This index is the position in the array of posts at the end of the index structure.
 
-Let's use an example. The following snippet is taken from the Markdown source of this {% link_uuid title='post' uuid=28623ef9-070a-464c-889c-f5a42fac3cd4 lang=en %}:
+Let's use an example. The following snippet is taken from the Markdown source of this [post](28623ef9-070a-464c-889c-f5a42fac3cd4/en):
 
 `**Cybernetics**[^1], the science of the common features of processes and control systems in technological devices, living organisms and human organisations. The principles of C. were first set forth by Wiener (q.v.)`
 
@@ -287,7 +287,7 @@ In this new code, a BK-Tree is constructed for each word index, and now these tr
 
 ## Looking for the headline
 
-The fuzzy search function that was implemented above will match similar words. But surely the user, after typing "cyber", will expect {% link_uuid title='"Cybernetics" (in A Dictionary of Philosophy, 1967)' uuid=28623ef9-070a-464c-889c-f5a42fac3cd4 %} to appear in the results.
+The fuzzy search function that was implemented above will match similar words. But surely the user, after typing "cyber", will expect [28623ef9-070a-464c-889c-f5a42fac3cd4] to appear in the results.
 
 Implementing a prefix match for all the words is possible, for instance with a [radix tree](https://en.wikipedia.org/wiki/Radix_tree) structure. But that would probably generate too many results, many of them unuseful. If the user types "app", do they want results about applications but also about apples?
 
