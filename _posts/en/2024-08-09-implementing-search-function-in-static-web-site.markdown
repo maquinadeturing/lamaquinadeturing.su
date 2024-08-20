@@ -6,13 +6,13 @@ image_caption: "Cuff's solar microscope in [\"Mikroskopische Gemüths - und Auge
 categories: Web
 ---
 
-Static web sites are the best. They are fast, lightweight, safe and content-centric. However, not having a server comes with its sacrifices. I can go without forms, user accounts or comments, but the thing I miss the most is _searching_.
+Static web sites [are the best](7aba63cf-f969-404f-bdcc-82c702abc24a). They are fast, lightweight, safe and content-centric. However, not having a server comes with its sacrifices. I can go without forms, user accounts or comments, but the thing I miss the most is _searching_.
 
 ## The poor man's search function
 
 Usually, the alternative has been the `site:` operator in Google: a form in your website would transform the search string into a `site:` query and redirect it to Google. Purists can do the same with [DuckDuckGo](https://duckduckgo.com/duckduckgo-help-pages/results/syntax/). But that leaves me relying on notoriously unreliable companies, which can drop this feature at any moment or hide it behind a pawyall.
 
-And I wandered: is there a way to have my own search function?
+And I wondered: is there a way to have my own search function?
 
 ## Is static search even possible?
 
