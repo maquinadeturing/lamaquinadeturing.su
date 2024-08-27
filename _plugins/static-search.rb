@@ -20,7 +20,7 @@ module StaticSearch
 
                 if stopwords[lang].nil? then
                     stopwords[lang] = Set.new
-                    stopwords_path = File.join(site.source, "_plugin_data", "stopwords_#{lang}.json")
+                    stopwords_path = File.join(site.source, "_plugin", "stopwords", "stopwords_#{lang}.json")
                     if File.exist?(stopwords_path) then
                         stopwords[lang] = JSON.parse(File.read(stopwords_path)).to_set
                     end
