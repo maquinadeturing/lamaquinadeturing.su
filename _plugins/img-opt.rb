@@ -26,14 +26,9 @@ module Jekyll
 
                 image_files = Dir.glob(File.join(site.config['images']['source'], '*'))
                     .map { |file| File.join(site.source, file) }
-                    .reject { |file| File.basename(file, '.*').end_with?("_opt") }
-                    .reject { |file| image_sizes.map { |size_obj| size_obj['size'] }.any? do |size|
-                        File.basename(file, '.*').end_with?("_opt#{size}")
-                    end }
 
                 image_files.each do |image_file|
-                    image_base_dir = File.dirname(image_file)
-                    image_base_name = File.basename(image_file, '.*')
+                    image_relative_dir = Pathname.new(image_file).dirname.relative_path_from(Pathname.new(site.source)).to_s
                     image_ext = if site.config['images']['format']['type'] == 'jpeg' then
                         'jpg'
                     else
@@ -41,39 +36,71 @@ module Jekyll
                         next
                     end
 
-                    MiniMagick::Image.open(image_file).tap do |image|
-                        output_file = File.join(image_base_dir, "#{image_base_name}_opt.#{image_ext}")
+                    site.static_files.reject! { |file| file.path == image_file }
 
-                        next if (File.exist?(output_file) && (
-                            File.mtime(output_file) > File.mtime(image_file) &&
-                            File.mtime(output_file) > File.mtime(File.join(site.source, '_config.yml'))
-                            ))
-
-                        image.format site.config['images']['format']['type']
-                        image.quality site.config['images']['format']['quality']
-                        image.strip # Remove any metadata
-                        image.write output_file
-                    end
-
-                    image_sizes.each do |image_size_obj|
-                        image_size = image_size_obj['size']
-                        image = MiniMagick::Image.open(image_file)
-
-                        output_file = File.join(image_base_dir, "#{image_base_name}_opt#{image_size}.#{image_ext}")
-
-                        next if (File.exist?(output_file) && (
-                            File.mtime(output_file) > File.mtime(image_file) &&
-                            File.mtime(output_file) > File.mtime(File.join(site.source, '_config.yml'))
-                            ))
-
-                        image.resize image_size
-
-                        image.format site.config['images']['format']['type']
-                        image.quality image_size_obj['quality']
-                        image.strip # Remove any metadata
-                        image.write output_file
+                    site.static_files << ImageStaticFile.new(
+                        site,
+                        site.source,
+                        image_relative_dir,
+                        File.basename(image_file),
+                        site.config['images']['format']['type'],
+                        site.config['images']['format']['quality'],
+                        image_ext
+                    )
+                    site.static_files += image_sizes.map do |image_size_obj|
+                        ImageStaticFile.new(
+                            site,
+                            site.source,
+                            image_relative_dir,
+                            File.basename(image_file),
+                            site.config['images']['format']['type'],
+                            image_size_obj['quality'],
+                            image_ext,
+                            image_size_obj['size']
+                        )
                     end
                 end
+            end
+        end
+
+        # A static file that references an existing source image file, but
+        # its methods are overridden to generate an optimized version of the image
+        # with a different format, quality and optionally size, and a customized
+        # destination file name and URL.
+        class ImageStaticFile < StaticFile
+            def initialize(site, base, dir, name, format, quality, ext, size = nil)
+                super(site, base, dir, name)
+                @format = format
+                @quality = quality
+                @ext = ext
+                @size = size
+            end
+
+            def destination(dest)
+                output_file_name = "#{File.basename(@name, '.*')}_opt#{@size}.#{@ext}"
+                File.join(dest, @dir, output_file_name)
+            end
+
+            def write(dest)
+                dest_path = destination(dest)
+                output_file_name = File.basename(dest_path)
+
+                if File.exist?(dest_path) then
+                    older_than_source = File.mtime(dest_path) < File.mtime(File.join(@base, @dir, @name))
+                    older_than_config = File.mtime(dest_path) < File.mtime(File.join(@site.source, '_config.yml'))
+                    return false if File.exist?(dest_path) && !older_than_source && !older_than_config
+                end
+
+                FileUtils.mkdir_p(File.dirname(dest_path))
+                image = MiniMagick::Image.open(File.join(@base, @dir, @name))
+                image.resize @size if @size
+                image.format @format
+                image.quality @quality
+                image.strip # Remove EXIF data
+                image.write(dest_path)
+
+                file_size_variation = -(1 - File.size(dest_path).to_f / File.size(File.join(@base, @dir, @name)).to_f) * 100
+                Jekyll.logger.info "ImageProcessor", "Processing #{@name} to #{output_file_name} (#{'%+d' % file_size_variation}%)"
             end
         end
     end
