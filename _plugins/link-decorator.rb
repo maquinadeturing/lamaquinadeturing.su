@@ -7,7 +7,7 @@ module Jekyll
         def self.decorate(content)
             doc = Nokogiri::HTML.parse(content)
             doc.css('a').each do |link|
-                if link['href'] =~ /wikipedia\.org/
+                if link['href'] =~ /wikipedia\.org/ || link['href'] =~ /wikimedia\.org/ || link['href'] =~ /wiktionary\.org/ || link['href'] =~ /wikisource\.org/
                     link['class'] = (link['class'].to_s.split(' ') << 'link-wikipedia').join(' ')
                 elsif link['href'] =~ /archive\.org/
                     link['class'] = (link['class'].to_s.split(' ') << 'link-archive').join(' ')
