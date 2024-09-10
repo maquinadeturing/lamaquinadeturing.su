@@ -1,4 +1,3 @@
-require 'jekyll'
 require 'nokogiri'
 
 module Jekyll
@@ -48,6 +47,13 @@ module Jekyll
             toc_element = doc.at_css('.toc')
             return unless toc_element
 
+            maxdepth = 6
+            if toc_element['data-maxdepth']
+                maxdepth = toc_element['data-maxdepth'].to_i
+                maxdepth = 6 if maxdepth > 6
+                toc_element.remove_attribute('data-maxdepth')
+            end
+
             toc = []
             toc_ids = 0
 
@@ -56,8 +62,11 @@ module Jekyll
 
                 next if heading_classes.include?('no-toc')
 
-                heading['class'] = (heading_classes << 'heading').join(' ')
                 level = heading.name[1].to_i
+
+                next if level > maxdepth
+
+                heading['class'] = (heading_classes << 'heading').join(' ')
                 id = heading['id']
                 text = heading.text
                 toc_entry_id = "toc-#{toc_ids += 1}"
@@ -68,14 +77,16 @@ module Jekyll
                 toc << { level: level, id: id, text: text, toc_entry_id: toc_entry_id }
             end
 
+            Jekyll.logger.warn "DOM Decorator", "No headings found in the document" if toc.empty?
+
             toc.each do |entry|
                 level = entry[:level]
                 id = entry[:id]
                 text = entry[:text]
                 toc_entry_id = entry[:toc_entry_id]
 
-                link = "<a href='##{id}'>#{text}</a>"
-                entry_html = "<p id='#{toc_entry_id}' class='toc toc-h#{level}'>#{link}</p>"
+                link = "<a href=\"##{id}\">#{text}</a>"
+                entry_html = "<p id=\"#{toc_entry_id}\" class=\"toc toc-h#{level}\">#{link}</p>"
                 toc_element.add_child(entry_html)
             end
         end
@@ -86,6 +97,19 @@ module Jekyll
     end
 
     class TOCTag < Liquid::Tag
+        def initialize(tag_name, text, tokens)
+            super
+            @params = {}
+            text.scan(Liquid::TagAttributes) do |key, value|
+                if key == "maxdepth"
+                    value = value.to_i
+                else
+                    raise "Invalid syntax for TOC tag" if key.empty? || value.empty? || key != "maxdepth"
+                end
+                @params[key] = value
+            end
+        end
+
         def render(context)
             page = context.registers[:page]
 
@@ -95,7 +119,11 @@ module Jekyll
                 page['_toc_rendered'] = true
             end
 
-            '<div class="toc"></div>'
+            if @params['maxdepth']
+                "<div class=\"toc\" data-maxdepth=\"#{@params['maxdepth']}\"></div>"
+            else
+                "<div class=\"toc\"></div>"
+            end
         end
     end
 end

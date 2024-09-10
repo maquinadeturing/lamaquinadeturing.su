@@ -34,7 +34,7 @@ Director</p>
 ## Contents
 {:.no-toc}
 
-{% toc %}
+{% toc maxdepth:2 %}
 
 ## 1. Introduction
 
