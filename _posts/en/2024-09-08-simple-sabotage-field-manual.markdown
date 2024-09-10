@@ -31,6 +31,11 @@ AR 380-5, pertaining to handling of secret documents, will be complied with in t
 <p class="textcenter"><a href="https://en.wikipedia.org/wiki/William_J._Donovan">William J. Donovan</a><br>
 Director</p>
 
+## Contents
+{:.no-toc}
+
+{% toc %}
+
 ## 1. Introduction
 
 The purpose of this paper is to characterize simple sabotage, to outline its possible effects, and to present suggestions for inciting and executing it.
