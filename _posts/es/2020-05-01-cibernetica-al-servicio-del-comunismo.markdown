@@ -16,7 +16,7 @@ _De Berg, trasluce su visión de una ciencia al servicio de la vida y las humani
 
 _En definitiva, es un documento que muestra los usos que se podría haber dado a la tecnología cibernética, y que hoy estamos a tiempo de dar a la tecnología informática._
 
-<hr class="wp-block-separator is-style-wide">
+---
 
 Introducción
 ------------
@@ -77,7 +77,7 @@ Ahora podemos volver al comienzo de nuestra introducción. Hemos demostrado con 
 
 Pero ahora este estudio tiene objetivos prácticos. Ahora no estamos completamente satisfechos con la contemplación, observación, medición y almacenamiento de esta información. En el estudio del mundo que nos rodea y de la vida silvestre necesitamos utilizar esta información para satisfacer las necesidades materiales y espirituales del hombre, para facilitar su trabajo.
 
-<hr class="wp-block-separator">
+<hr class="asterisks">
 
 El primer volumen de la colección “Cibernética: al servicio del comunismo” contiene varios artículos cuyo propósito es familiarizar a los lectores con las oportunidades que surgen en el uso práctico de los principios de la cibernética. La colección contiene, además de la introducción, 19 artículos escritos por autores que trabajan directamente en los campos relevantes. Los artículos se agrupan en 4 secciones: la primera sección: recopilación, procesamiento y transmisión de información; segunda cibernética y vida silvestre; la tercera es cibernética y humanidades, y la cuarta sección es cibernética en ciencia y tecnología.
 
@@ -389,7 +389,7 @@ Los científicos de la Unión Soviética, sin duda, harán todo lo posible para 
 
 > El progreso de la ciencia y la tecnología en las condiciones de un sistema económico socialista permite el uso más eficiente de la riqueza y la naturaleza de la naturaleza en interés de las personas, para descubrir nuevos tipos de energía, crear nuevos materiales, desarrollar métodos para influir en las condiciones climáticas y dominar el espacio exterior. La aplicación de la ciencia se convierte en un factor decisivo en el poderoso crecimiento de las fuerzas productivas de la sociedad. El desarrollo de la ciencia y la introducción de sus logros en la economía nacional seguirá siendo de particular interés para el partido.
 
-<hr class="wp-block-separator is-style-wide">
+---
 
 ## Notas
 
