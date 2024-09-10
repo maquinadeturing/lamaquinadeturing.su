@@ -87,6 +87,14 @@ module Jekyll
 
     class TOCTag < Liquid::Tag
         def render(context)
+            page = context.registers[:page]
+
+            if page['_toc_rendered']
+                raise "Error: Multiple TOC tags rendered in the same page"
+            else
+                page['_toc_rendered'] = true
+            end
+
             '<div class="toc"></div>'
         end
     end
