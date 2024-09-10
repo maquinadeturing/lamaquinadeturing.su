@@ -23,7 +23,10 @@ email: your-email@example.com
 description: cat /dev/random
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://lamaquinadeturing.su" # the base hostname & protocol for your site, e.g. http://example.com
-mastodon_username: "@urixturing@mastodont.cat"
+
+social:
+  mastodon_username: "@urixturing@mastodont.cat"
+  github_link:  "https://github.com/maquinadeturing/lamaquinadeturing.su"
 
 languages:
   - ca

@@ -52,17 +52,20 @@
         <ul class="search-results hidden"></ul>
     </nav>
 
-    {% if site.mastodon_username %}
+    {% if site.social %}
     <ul class="social-media-profiles element__frame">
         <li>
             <p class="bar__title">
                 {{ 'Social' | localize: page.lang }} </p>
         </li>
-        {% if site.mastodon_username %}
-            {% assign parts = site.mastodon_username | split: "@" %}
+        {% if site.social.mastodon_username %}
+            {% assign parts = site.social.mastodon_username | split: "@" %}
             {% assign user = parts[1] %}
             {% assign instance = parts[2] %}
         <li><a href="https://{{ instance }}/@{{ user }}"><img src="/assets/img/mastodon.svg" width="12" height="12"></a></li>
+        {% endif %}
+        {% if site.social.github_link %}
+        <li><a href="{{ site.social.github_link }}"><img src="/assets/img/github.svg" width="12" height="12"></a></li>
         {% endif %}
     </ul>
     {% endif %}
