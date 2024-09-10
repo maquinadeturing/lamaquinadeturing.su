@@ -8,9 +8,9 @@ image_caption: >
 
 _The_ [Simple Sabotage Field Manual](https://en.wikisource.org/wiki/Simple_Sabotage_Field_Manual) _was a collection of simple sabotage techniques gathered by the_ Office of Strategic Services _(predecessor of the CIA) during World War II to be distributed among workers in enemy countries and disrupt their industry and military._
 
-_Despite being used in 1944, many of its methods will be familiar to 21st century readers. Notably, some techniques come from observing inneficiencies that happen in many organizations "even under normal conditions", which makes many people inadvertedly act as "sabouteurs". For example, by "bringing up irrelevant issues as frequently as possible" or "referring back to matters decided upon at the last meeting and attempting to re-open the question"._
+_Despite being used in 1944, many of its methods will be familiar to 21st century readers. Notably, some techniques come from observing inefficiencies that happen in many organizations "even under normal conditions", which makes many people inadvertently act as "saboteurs". For example, by "bringing up irrelevant issues as frequently as possible" or "referring back to matters decided upon at the last meeting and attempting to re-open the question"._
 
-_Erik Bernhardsson adapted it to software development in its [Simple sabotage for software](https://erikbern.com/2023/12/13/simple-sabotage-for-software.html)._
+_Erik Bernhardsson adapted it to software development in his [Simple sabotage for software](https://erikbern.com/2023/12/13/simple-sabotage-for-software.html)._
 
 ---
 
@@ -89,7 +89,7 @@ It should be pointed out to the saboteur where the circumstances are suitable, t
 
 4. After you have committed an act of easy sabotage, resist any temptation to wait around and see what happens. Loiterers arouse suspicion. Of course, there are circumstances when it would be suspicious for you to leave. If you commit sabotage on your job, you should naturally stay at your work.
 
-## 4. TOOLS, TARGETS, AND TIMING
+## 4. Tools, Targets, And Timing
 
 The citizen-saboteur cannot be closely controlled. Nor is it reasonable to expect that simple sabotage can be precisely concentrated on specific types of target according to the requirements of a concrete military situation. Attempts to control simple sabotage according to developing military factors, moreover, might provide the enemy with intelligence of more or less value in anticipating the date and area of notably intensified or notably slackened military activity.
 
@@ -155,7 +155,7 @@ Warehouses, barracks, offices, hotels, and factory buildings are outstanding tar
 
 2. Forget to provide paper in toilets; put tightly rolled paper, hair, and other obstructions in the W. C. Saturate a sponge with a thick starch or sugar solution. Squeeze it tightly into a ball, wrap it with string, and dry. Remove the string when fully dried. The sponge will be in the form of a tight hard ball. Flush down a
 
-W. C. or otherwise introduce into a sewer line. The sponge will gradually expand to its normal size and plug the sewage system.
+   W. C. or otherwise introduce into a sewer line. The sponge will gradually expand to its normal size and plug the sewage system.
 
 3. Put a coin beneath a bulb in a public building during the daytime, so that fuses will blow out when lights are turned on at night. The fuses themselves may be rendered ineffective by putting a coin behind them or loading them with heavy wire. Then a short-circuit may either start a fire, damage transformers, or blow out a central fuse which will interrupt distribution of electricity to a large area.
 
@@ -313,7 +313,7 @@ No suggestions available.
 
 3. See that the luggage of enemy personnel is mislaid or unloaded at the wrong stations.
 
-Switch address labels on enemy baggage.
+   Switch address labels on enemy baggage.
 
 4. Engineers should see that trains run slow or make unscheduled stops for plausible reasons.
 
@@ -443,9 +443,9 @@ Switch address labels on enemy baggage.
 
 1. While loading or unloading, handle cargo carelessly in order to cause damage. Arrange the cargo so that the weakest and lightest crates and boxes will be at the bottom of the hold, while the heaviest ones are on top of them.
 
-Put hatch covers and tarpaulins on sloppily, so that rain and deck wash will injure the cargo.
+   Put hatch covers and tarpaulins on sloppily, so that rain and deck wash will injure the cargo.
 
-Tie float valves open so that storage tanks will overflow on perishable goods.
+   Tie float valves open so that storage tanks will overflow on perishable goods.
 
 ### (9) Communications
 
@@ -455,7 +455,7 @@ Tie float valves open so that storage tanks will overflow on perishable goods.
 
 2. Hamper official and especially military business by making at least one telephone call a day to an enemy headquarters; when you get them, tell them you have the wrong number.
 
-Call military or police offices and make anonymous false reports of fires, air raids, bombs.
+   Call military or police offices and make anonymous false reports of fires, air raids, bombs.
 
 3. In offices and buildings used by the enemy, unscrew the earphone of telephone receivers and remove the diaphragm. Electricians and telephone repair men can make poor connections and damage insulation so that cross talk and other kinds of electrical interference will make conversations hard or impossible to understand.
 
