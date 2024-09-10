@@ -222,7 +222,9 @@ Warehouses, barracks, offices, hotels, and factory buildings are outstanding tar
 
 7. If you have access to a room where gasoline is stored, remember that gas vapor accumulating in a closed room will explode after a time if you leave a candle burning in the room. A good deal of evaporation, however, must occur from the gasoline tins into the air of the room. If removal of the tops of the tins does not expose enough gasoline to the air to ensure copious evaporation, you can open lightly constructed tins further with a knife, ice pick or sharpened nail file. Or puncture a tiny hole in the tank which will permit gasoline to leak out on the floor. This will greatly increase the rate of evaporation. Before you light your candle, be sure that windows are closed and the room is as air-tight as you can make it. If you can see that windows in a neighboring room are opened wide, you have a chance of setting a large fire which will not only destroy the gasoline but anything else nearby; when the gasoline explodes, the doors of the storage room will be blown open, a draft to the neighboring windows will be created which will whip up a fine conflagration.
 
-(e) Electric Motors Electric motors (including dynamos) are more restricted than the targets so far discussed. They cannot be sabotaged easily or without risk of injury by unskilled persons who may otherwise have good opportunities for destruction.
+(e) Electric Motors
+
+Electric motors (including dynamos) are more restricted than the targets so far discussed. They cannot be sabotaged easily or without risk of injury by unskilled persons who may otherwise have good opportunities for destruction.
 
 1. Set the rheostat to a high point of resistance in all types of electric motors. They will overheat and catch fire.
 
