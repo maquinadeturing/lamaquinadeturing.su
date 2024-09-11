@@ -269,7 +269,9 @@ module Jekyll
 
         def localize(string, lang)
             return string if lang.nil?
-            @context.registers[:site].data['localization'][string][lang] || string
+            translations = @context.registers[:site].data['localization'][string]
+            raise "No translations found for string '#{string}'" if translations.nil?
+            translations[lang] || string
         end
 
         def find_prefered_translation(uuid, prefered_lang)
