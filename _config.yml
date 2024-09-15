@@ -40,18 +40,21 @@ plugins:
 assets:
   - type: css
     source: { files: [ assets/css/inlined.css ] }
-    output: inlined
+    load: inlined
   - type: css
     source: { files: [
       assets/css/style.css,
       assets/css/toc.css # Linked to avoid CSS `transition` triggered when this file is loaded
     ] }
-    output: linked
+    load: linked
+    output: /assets/css/linked.css
   - type: css
     source: { directory: assets/css }
-    output: /assets/css/combined.css
+    load: deferred
+    output: /assets/css/deferred.css
   - type: js
     source: { directory: assets/js }
+    load: deferred
     output: /assets/js/combined.js
 
 images:

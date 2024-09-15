@@ -10,8 +10,8 @@ module Jekyll
             already_processed = Set.new
 
             for assets_config in assets_config_entries
-                if assets_config['source'] == nil || assets_config['output'] == nil then
-                    Jekyll.logger.error 'Assets:', 'source and output must be defined'
+                if assets_config['source'] == nil || assets_config['load'] == nil then
+                    Jekyll.logger.error 'Assets:', 'source and load must be defined'
                     next
                 end
 
@@ -31,22 +31,19 @@ module Jekyll
 
                 asset_type = assets_config['type'].downcase
 
-                if assets_config['output'] == 'linked' then
-                    source_path_list = source_file_list
-                        .map { |file| Pathname.new(file).relative_path_from(Pathname.new(site.source)).to_s }
-                        .map { |file| '/' + file }
-                    Jekyll.logger.info 'Assets:', "Linked #{source_path_list.size} #{asset_type.upcase} files"
-                    site.data["linked_#{asset_type}"] ||= []
-                    site.data["linked_#{asset_type}"] += source_path_list
-                    next
-                end
-
                 combined = source_file_list.map { |file| "/* #{File.basename(file)} */\n#{File.read(file)}" }.join("\n")
 
-                if assets_config['output'] == 'inlined' then
+                site.static_files.reject! { |file| source_file_list.include?(file.path) }
+
+                if assets_config['load'] == 'inlined' then
                     Jekyll.logger.info 'Assets:', "Inlined #{source_file_list.size} #{asset_type.upcase} files with #{combined.size / 1024} KB"
                     site.data["inlined_#{asset_type}"] = combined
-                else
+                elsif ['linked', 'deferred'].include?(assets_config['load']) then
+                    if assets_config['output'].nil?
+                        Jekyll.logger.error 'Assets:', "output must be defined if load is not inlined"
+                        next
+                    end
+
                     site.pages << Jekyll::PageWithoutAFile.new(site, __dir__, "", assets_config['output']).tap do |file|
                         file.content = combined
                         file.data.merge!(
@@ -58,11 +55,12 @@ module Jekyll
                         file.output
                     end
 
-                    site.data["deferred_#{asset_type}"] ||= []
-                    site.data["deferred_#{asset_type}"] << assets_config['output']
+                    site.data["#{assets_config['load']}_#{asset_type}"] ||= []
+                    site.data["#{assets_config['load']}_#{asset_type}"] << assets_config['output']
+                else
+                    Jekyll.logger.error 'Assets:', "Unknown load type #{assets_config['load']}"
+                    next
                 end
-
-                site.static_files.reject! { |file| source_file_list.include?(file.path) }
             end
         end
     end
