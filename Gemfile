@@ -35,3 +35,5 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 gem "mini_magick", "~> 5.0"
 
 gem "nokogiri", "~> 1.16"
+
+gem "jekyll-sitemap", "~> 1.4"

@@ -36,6 +36,7 @@ languages:
 # Build settings
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
 
 assets:
   - type: css
