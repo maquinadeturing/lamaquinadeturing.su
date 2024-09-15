@@ -23,7 +23,7 @@ module Jekyll
             doc = Nokogiri::HTML::DocumentFragment.parse(content)
 
             decorate_links(doc)
-            decorate_toc(doc)
+            decorate_headings(doc)
 
             @@total_conversion_time += Time.now - start_time
 
@@ -44,11 +44,9 @@ module Jekyll
             end
         end
 
-        def decorate_toc(doc)
+        def decorate_headings(doc)
             toc_element = doc.at_css('.toc')
             automatic_toc = @@current_post && !!@@current_post.data['toc']
-
-            return unless toc_element || automatic_toc
 
             maxdepth = 6
             if toc_element && toc_element['data-maxdepth']
@@ -65,13 +63,16 @@ module Jekyll
 
                 next if heading_classes.include?('no-toc')
 
+                id = heading['id']
                 level = heading.name[1].to_i
+                text = heading.text
+
+                anchor = "<a class='heading-link' href='##{id}'>§</a>"
+                heading.prepend_child(anchor)
 
                 next if level > maxdepth
 
                 heading['class'] = (heading_classes << 'heading').join(' ')
-                id = heading['id']
-                text = heading.text
                 toc_entry_id = "toc-#{toc_ids += 1}"
 
                 if toc_element
@@ -82,7 +83,7 @@ module Jekyll
                 toc << { level: level, id: id, text: text, toc_entry_id: toc_entry_id }
             end
 
-            Jekyll.logger.warn "DOM Decorator", "No headings found in the document #{@@current_post.data["title"]}" if toc.empty?
+            Jekyll.logger.warn "DOM Decorator", "No headings found in the document #{@@current_post.data["title"]}" if toc.empty? && (automatic_toc || toc_element)
 
             @@current_post.data["toc_html"] = "" if automatic_toc
 
