@@ -95,7 +95,7 @@ module Jekyll
 
             def render_linked(asset_paths, asset_type)
                 if asset_type == 'css' then
-                    asset_paths.map { |asset_path| "<link rel=\"stylesheet\" href=\"#{asset_path}\">" }.join("\n")
+                    asset_paths.map { |asset_path| "<link rel=\"stylesheet\" href=\"#{asset_path}\" type=\"text/css\">" }.join("\n")
                 elsif asset_type == 'js' then
                     asset_paths.map { |asset_path| "<script src=\"#{asset_path}\"></script>" }.join("\n")
                 else

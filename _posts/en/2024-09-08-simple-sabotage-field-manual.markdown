@@ -4,6 +4,7 @@ date:   2024-09-08 19:00:00 +0200
 image:  simplesabotage.png
 image_caption: >
   "Simple Sabotage Field Manual" cover by the Office of Strategic Services (1944).
+toc: true
 ---
 
 _The_ [Simple Sabotage Field Manual](https://en.wikisource.org/wiki/Simple_Sabotage_Field_Manual) _was a collection of simple sabotage techniques gathered by the_ Office of Strategic Services _(predecessor of the CIA) during World War II to be distributed among workers in enemy countries and disrupt their industry and military._

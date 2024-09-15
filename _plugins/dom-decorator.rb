@@ -6,6 +6,7 @@ module Jekyll
         priority :low
 
         @@total_conversion_time = 0
+        @@current_post = nil
 
         def matches(ext)
             ext = ext.downcase
@@ -45,10 +46,12 @@ module Jekyll
 
         def decorate_toc(doc)
             toc_element = doc.at_css('.toc')
-            return unless toc_element
+            automatic_toc = @@current_post && !!@@current_post.data['toc']
+
+            return unless toc_element || automatic_toc
 
             maxdepth = 6
-            if toc_element['data-maxdepth']
+            if toc_element && toc_element['data-maxdepth']
                 maxdepth = toc_element['data-maxdepth'].to_i
                 maxdepth = 6 if maxdepth > 6
                 toc_element.remove_attribute('data-maxdepth')
@@ -71,13 +74,17 @@ module Jekyll
                 text = heading.text
                 toc_entry_id = "toc-#{toc_ids += 1}"
 
-                heading_back_link = " <a href='##{toc_entry_id}' class='toc-back-link'>↩</a>"
-                heading.add_child(heading_back_link)
+                if toc_element
+                    heading_back_link = " <a href='##{toc_entry_id}' class='toc-back-link'>↩</a>"
+                    heading.add_child(heading_back_link)
+                end
 
                 toc << { level: level, id: id, text: text, toc_entry_id: toc_entry_id }
             end
 
-            Jekyll.logger.warn "DOM Decorator", "No headings found in the document" if toc.empty?
+            Jekyll.logger.warn "DOM Decorator", "No headings found in the document #{@@current_post.data["title"]}" if toc.empty?
+
+            @@current_post.data["toc_html"] = "" if automatic_toc
 
             toc.each do |entry|
                 level = entry[:level]
@@ -87,12 +94,22 @@ module Jekyll
 
                 link = "<a href=\"##{id}\">#{text}</a>"
                 entry_html = "<p id=\"#{toc_entry_id}\" class=\"toc toc-h#{level}\">#{link}</p>"
-                toc_element.add_child(entry_html)
+
+                if toc_element
+                    toc_element.add_child(entry_html)
+                end
+                if automatic_toc
+                    @@current_post.data["toc_html"] << entry_html
+                end
             end
         end
 
         def self.total_conversion_time
             @@total_conversion_time
+        end
+
+        def self.set_current_post(post)
+            @@current_post = post
         end
     end
 
@@ -126,6 +143,16 @@ module Jekyll
             end
         end
     end
+end
+
+Jekyll::Hooks.register :posts, :pre_render do |post, payload|
+    # Set the current post in a global variable of the converter, so it can access the post data
+    Jekyll::CustomConverter.set_current_post(post)
+end
+
+Jekyll::Hooks.register :posts, :post_render do |post|
+    # Reset the current post after the conversion is done
+    Jekyll::CustomConverter.set_current_post(nil)
 end
 
 Jekyll::Hooks.register :site, :post_render do |site|

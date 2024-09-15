@@ -4,7 +4,6 @@
 
 .toc-back-link {
     color: var(--color-indifferent);
-    transition: none;
 }
 
 .toc-back-link:hover {
@@ -18,35 +17,31 @@
     }
 }
 
-.toc a {
-    transition: none;
-}
-
 .toc-h1 {
-    font-size: 1.2em;
+    font-size: 110%;
 }
 
 .toc-h2 {
-    font-size: 1.1em;
+    font-size: 100%;
     margin-left: 0.5em;
 }
 
 .toc-h3 {
-    font-size: 1em;
+    font-size: 90%;
     margin-left: 1em;
 }
 
 .toc-h4 {
-    font-size: 0.9em;
+    font-size: 80%;
     margin-left: 1.5em;
 }
 
 .toc-h5 {
-    font-size: 0.8em;
+    font-size: 70%;
     margin-left: 2em;
 }
 
 .toc-h6 {
-    font-size: 0.7em;
+    font-size: 60%;
     margin-left: 2.5em;
 }

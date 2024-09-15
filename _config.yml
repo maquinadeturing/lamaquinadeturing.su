@@ -42,7 +42,10 @@ assets:
     source: { files: [ assets/css/inlined.css ] }
     output: inlined
   - type: css
-    source: { files: [ assets/css/style.css ] }
+    source: { files: [
+      assets/css/style.css,
+      assets/css/toc.css # Linked to avoid CSS `transition` triggered when this file is loaded
+    ] }
     output: linked
   - type: css
     source: { directory: assets/css }

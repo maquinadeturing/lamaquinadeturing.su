@@ -1,5 +1,11 @@
 <aside class="widget-area" itemscope="" itemtype="http://schema.org/WPSideBar">
-    <div id="recent-posts-2" class="widget element__frame widget_recent_entries">
+    {% if page.toc_html %}
+    <div class="widget element__frame widget_toc">
+        <h3 class="widget-title">{{ 'Contents' | localize: page.lang }}</h3>
+        {{ page.toc_html }}
+    </div>
+    {% endif %}
+    <div class="widget element__frame widget_recent_entries">
         <h3 class="widget-title">{{ 'Recent Posts' | localize: page.lang }}</h3>
         <ul>
             {% for post_uuid in site.data.localized_posts limit:5 %}

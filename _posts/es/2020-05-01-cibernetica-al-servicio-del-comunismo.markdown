@@ -3,6 +3,7 @@ uuid: 8a9feaca-9e90-4c16-b91d-0230b5502fd9
 title:  "Cibernética – al servicio del comunismo"
 date:   2020-05-01 13:00:00 +0200
 image:  cybernetics.png
+toc: true
 categories: Cibernética
 ---
 
