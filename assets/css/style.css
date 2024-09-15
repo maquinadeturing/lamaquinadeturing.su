@@ -284,11 +284,14 @@ blockquote:before {
 }
 
 .pull li a {
-    color: var(--color-border);
     font-size: .5rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 600;
+}
+
+.pull li a:not(:hover) {
+    color: var(--color-border);
 }
 
 #site-header nav .search-form {
@@ -396,6 +399,18 @@ blockquote:before {
     font-weight: normal;
 }
 
+.entry__title a, .widget a {
+    text-decoration: none;
+}
+
+.entry__title a:not(:hover), .widget a:not(:hover) {
+    color: var(--color-title);
+}
+
+.grid__item article:hover .entry__title a {
+    color: var(--color-accent);
+}
+
 .flex__wrapper {
     display: flex;
     justify-content: space-between;
@@ -417,20 +432,6 @@ article.element__frame.flex__quarter,
 .grid__item article:hover a.entry-thumbnail img {
     -webkit-filter: grayscale(0);
     filter: grayscale(0);
-}
-
-/* Touch screen device */
-@media (hover: none) {
-    .grid__item article a.entry-thumbnail img {
-        -webkit-filter: none;
-        filter: none;
-        transition: none;
-    }
-
-    .grid__item article:hover a.entry-thumbnail img {
-        -webkit-filter: none;
-        filter: none;
-    }
 }
 
 .category-name {
@@ -563,6 +564,10 @@ article.element__frame.flex__quarter,
 .grid__single .grid__item .entry-content,
 .grid__page .grid__item .entry-content {
     margin-top: 1rem;
+}
+
+.entry-content a {
+    text-decoration: underline;
 }
 
 .grid__item:nth-child(odd) {
@@ -822,17 +827,12 @@ ul.page-numbers li a {
     position: -webkit-sticky;
     position: sticky;
     top: 10px;
-    font-family: var(--font-title);
     line-height: 1.4;
 }
 
 .widget {
     margin-bottom: 1rem;
     padding: 1.5rem 1rem 1rem;
-}
-
-.widget-area a {
-    color: var(--color-title);
 }
 
 .widget-area ul,
@@ -851,6 +851,7 @@ ul.page-numbers li a {
 }
 
 .widget-title {
+    font-family: var(--font-title);
     font-size: 1.3rem;
     margin-top: 0;
 }
@@ -968,6 +969,32 @@ ul.page-numbers li a {
     width: 60px;
     background: url("/assets/img/top.svg") no-repeat center 20px var(--color-bg);
     min-width: 60px;
+}
+
+/* Touch screen device */
+@media (hover: none) {
+    .grid__item article a.entry-thumbnail img {
+        -webkit-filter: none;
+        filter: none;
+        transition: none;
+    }
+
+    .grid__item article:hover a.entry-thumbnail img {
+        -webkit-filter: none;
+        filter: none;
+    }
+
+    .grid__item article:hover .entry__title a {
+        color: var(--color-title);
+    }
+
+    .pull li span {
+        text-decoration: none;
+    }
+
+    .pull li a, .widget a {
+        text-decoration: underline;
+    }
 }
 
 @media screen and (-webkit-max-device-pixel-ratio: 1) and (max-width: 1439px),
