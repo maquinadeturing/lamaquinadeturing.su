@@ -1,7 +1,7 @@
 require 'nokogiri'
 
 module Jekyll
-    class CustomConverter < Converter
+    class DomConverter < Converter
         safe true
         priority :low
 
@@ -94,12 +94,13 @@ module Jekyll
                 toc_entry_id = entry[:toc_entry_id]
 
                 link = "<a href=\"##{id}\">#{text}</a>"
-                entry_html = "<p id=\"#{toc_entry_id}\" class=\"toc toc-h#{level}\">#{link}</p>"
 
                 if toc_element
+                    entry_html = "<p id=\"#{toc_entry_id}\" class=\"toc toc-h#{level}\">#{link}</p>"
                     toc_element.add_child(entry_html)
                 end
                 if automatic_toc
+                    entry_html = "<p class=\"toc toc-h#{level}\">#{link}</p>"
                     @@current_post.data["toc_html"] << entry_html
                 end
             end
@@ -148,16 +149,16 @@ end
 
 Jekyll::Hooks.register :posts, :pre_render do |post, payload|
     # Set the current post in a global variable of the converter, so it can access the post data
-    Jekyll::CustomConverter.set_current_post(post)
+    Jekyll::DomConverter.set_current_post(post)
 end
 
 Jekyll::Hooks.register :posts, :post_render do |post|
     # Reset the current post after the conversion is done
-    Jekyll::CustomConverter.set_current_post(nil)
+    Jekyll::DomConverter.set_current_post(nil)
 end
 
 Jekyll::Hooks.register :site, :post_render do |site|
-    Jekyll.logger.info "DOM Decorator", "Decorated in #{Jekyll::CustomConverter.total_conversion_time.round(2)} seconds"
+    Jekyll.logger.info "DOM Decorator", "Decorated in #{Jekyll::DomConverter.total_conversion_time.round(2)} seconds"
 end
 
 Liquid::Template.register_tag('toc', Jekyll::TOCTag)
