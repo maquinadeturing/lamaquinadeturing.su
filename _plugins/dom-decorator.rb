@@ -1,4 +1,6 @@
 require 'nokogiri'
+require 'tempfile'
+require 'open3'
 
 module Jekyll
     class DomConverter < Converter
@@ -24,6 +26,7 @@ module Jekyll
 
             decorate_links(doc)
             decorate_headings(doc)
+            decorate_mermaid(doc)
 
             @@total_conversion_time += Time.now - start_time
 
@@ -102,6 +105,28 @@ module Jekyll
                 if automatic_toc
                     entry_html = "<p class=\"toc toc-h#{level}\">#{link}</p>"
                     @@current_post.data["toc_html"] << entry_html
+                end
+            end
+        end
+
+        def decorate_mermaid(doc)
+            doc.css('pre.mermaid').each do |code|
+                text = code.text
+
+                Tempfile.create(['mermaid', '.mmd']) do |file|
+                    file.write(text)
+                    file.flush
+
+                    svg_path = file.path.sub(/\.mmd$/, '.svg')
+                    begin
+                        Jekyll.logger.debug "DOM Decorator", "Generating Mermaid SVG"
+                        _stdout, stderr, status = Open3.capture3("mmdc -i #{file.path} -o #{svg_path}")
+                        raise "Mermaid conversion failed for content: #{stderr}" unless status.success?
+                        svg_content = File.read(svg_path)
+                        code.replace("<div class=\"mermaid\">#{svg_content}</div>")
+                    ensure
+                        File.delete(svg_path) if File.exist?(svg_path)
+                    end
                 end
             end
         end

@@ -6,11 +6,6 @@ image_caption: |-
   [Miniature from a 12th-century Medical and Herbal Collection](https://publicdomainreview.org/collection/miniatures-from-a-12th-century-medical-and-herbal-collection/) once owned by the monastery at Ourscamps just north of Paris, and now in the collection at the British Library (BL Sloane 1975).
 ---
 
-<script type="module">
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-mermaid.initialize({ startOnLoad: true });
-</script>
-
 As [xkcd says](https://xkcd.com/1597/), Git is an awesome tool, but if something goes wrong just delete everything and download a fresh copy.
 
 One of these "oops" moments is `git rebase`. The cool brother of `git merge` is as powerful as misunderstood. I am writing this post because sometimes it surprises me that so many people will stumble upon common rebasing pitfalls.
