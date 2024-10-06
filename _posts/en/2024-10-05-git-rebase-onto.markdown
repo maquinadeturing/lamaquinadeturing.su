@@ -6,11 +6,6 @@ image_caption: |-
   [Miniature from a 12th-century Medical and Herbal Collection](https://publicdomainreview.org/collection/miniatures-from-a-12th-century-medical-and-herbal-collection/) once owned by the monastery at Ourscamps just north of Paris, and now in the collection at the British Library (BL Sloane 1975).
 ---
 
-<script type="module">
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-mermaid.initialize({ startOnLoad: true });
-</script>
-
 As [xkcd says](https://xkcd.com/1597/), Git is an awesome tool, but if something goes wrong just delete everything and download a fresh copy.
 
 One of these "oops" moments is `git rebase`. The cool brother of `git merge` is as powerful as misunderstood. I am writing this post because sometimes it surprises me that so many people will stumble upon common rebasing pitfalls.
@@ -24,7 +19,7 @@ What I want to explain in this post is the following:
 Git is like a tree, with a common trunk like `main` and branches like `develop`:
 
 <pre class="mermaid">
-%%{init: { 'theme': 'neutral' } }%%
+%%{init: { 'theme': 'base' } }%%
 gitGraph
     commit id: "1"
     commit id: "2"
@@ -47,7 +42,7 @@ git rebase main
 Then commits 5 and 6 will be moved (if there are no conflicts) to the tip of `main` like this:
 
 <pre class="mermaid">
-%%{init: { 'theme': 'neutral' } }%%
+%%{init: { 'theme': 'base' } }%%
 gitGraph
     commit id: "1"
     commit id: "2"
@@ -94,7 +89,7 @@ In collaborative teams, the following situation is very common: a feature branch
 
 
 <pre class="mermaid">
-%%{init: { 'theme': 'neutral' } }%%
+%%{init: { 'theme': 'base' } }%%
 gitGraph
     commit id: "1"
     commit id: "2"
@@ -114,7 +109,7 @@ gitGraph
 Inevitably, these conflicts have to be resolved. This usually causes the rebased commits to be different than the original:
 
 <pre class="mermaid">
-%%{init: { 'theme': 'neutral' } }%%
+%%{init: { 'theme': 'base', 'themeVariables': {'git0': '#ffcb5d', 'git1': '#77a3ff' } } }%%
 gitGraph
     commit id: "1"
     commit id: "2"
@@ -174,7 +169,7 @@ With this command, what we are telling Git is:
 Git, knowing this, will only select the commits between the common ancestor (commit 4) and the source branch: commits 5 and 6. When re-applying them on top of the tip of main (commit 4'), they should be fine most of the time.
 
 <pre class="mermaid">
-%%{init: { 'theme': 'neutral' } }%%
+%%{init: { 'theme': 'base' } }%%
 gitGraph
     commit id: "1"
     commit id: "2"

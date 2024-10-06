@@ -1,4 +1,6 @@
 require 'nokogiri'
+require 'tempfile'
+require 'open3'
 
 module Jekyll
     class DomConverter < Converter
@@ -24,6 +26,7 @@ module Jekyll
 
             decorate_links(doc)
             decorate_headings(doc)
+            decorate_mermaid(doc)
 
             @@total_conversion_time += Time.now - start_time
 
@@ -102,6 +105,52 @@ module Jekyll
                 if automatic_toc
                     entry_html = "<p class=\"toc toc-h#{level}\">#{link}</p>"
                     @@current_post.data["toc_html"] << entry_html
+                end
+            end
+        end
+
+        def decorate_mermaid(doc)
+            cache_dir = File.join(@@current_post.site.in_source_dir, '.jekyll-cache', 'dom-decorator') if @@current_post
+
+            doc.css('pre.mermaid').each_with_index do |code, index|
+                text = code.text.strip
+
+                svg_unique_id = Digest::MD5.hexdigest(text)
+
+                svg_content = if cache_dir
+                    svg_file_cache_path = File.join(cache_dir, "#{svg_unique_id}.svg")
+                    if File.exist?(svg_file_cache_path)
+                        Jekyll.logger.debug "DOM Decorator", "Using cached Mermaid SVG ##{index} in URL #{@@current_post.url}"
+
+                        File.read(svg_file_cache_path)
+                    else
+                        svg_content = mermaid_to_svg(text, index, svg_unique_id)
+                        FileUtils.mkdir_p(cache_dir)
+                        File.write(svg_file_cache_path, svg_content)
+                        svg_content
+                    end
+                else
+                    mermaid_to_svg(text, index, svg_unique_id)
+                end
+
+                code.replace("<div class=\"mermaid\"><!--\n#{text}\n-->\n#{svg_content}</div>")
+            end
+        end
+
+        def mermaid_to_svg(text, index, id)
+            Tempfile.create(['mermaid', '.mmd']) do |file|
+                file.write(text)
+                file.flush
+
+                svg_path = file.path.sub(/\.mmd$/, '.svg')
+                begin
+                    Jekyll.logger.info "DOM Decorator", "Generating Mermaid SVG ##{index} in URL #{@@current_post.url}"
+                    _stdout, stderr, status = Open3.capture3("mmdc --svgId svg#{id} -i #{file.path} -o #{svg_path}")
+                    raise "Mermaid conversion failed for content: #{stderr}" unless status.success?
+
+                    return File.read(svg_path)
+                ensure
+                    File.delete(svg_path) if File.exist?(svg_path)
                 end
             end
         end
