@@ -1,7 +1,7 @@
 ---
 uuid: b68e41e8-9b96-4f53-92d0-7c831298858c
 title:  "Quan la intel·ligència artificial va desplaçar la cibernètica"
-date:   2020-05-01 12:00:00 +0200
+date:   2020-05-01T12:00:00+0200
 image:  darthsmouth.jpg
 image_caption: >
   Organitzadors del Dartmouth Summer Research Project on Artificial Intelligence de 1956.

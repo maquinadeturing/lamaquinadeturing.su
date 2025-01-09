@@ -1,0 +1,50 @@
+{
+  "Topics": {
+    "ca": "Temes",
+    "es": "Temes"
+  },
+  "Only available in": {
+    "ca": "Només disponible en",
+    "es": "Sólo disponible en"
+  },
+  "Also available in": {
+    "ca": "També disponible en",
+    "es": "También disponible en"
+  },
+  "Recent Posts": {
+    "ca": "Entrades recents",
+    "es": "Entradas recientes"
+  },
+  "Category": {
+    "ca": "Categoria",
+    "es": "Categoría"
+  },
+  "Categories": {
+    "ca": "Categories",
+    "es": "Categorías"
+  },
+  "Social": {
+    "ca": "Xarxes socials",
+    "es": "Redes sociales"
+  },
+  "Search": {
+    "ca": "Cerca",
+    "es": "Buscar"
+  },
+  "Search for": {
+    "ca": "Cerca de",
+    "es": "Búsqueda de"
+  },
+  "Menu": {
+    "ca": "Menú",
+    "es": "Menú"
+  },
+  "This website does not use cookies": {
+    "ca": "Aquest lloc web no fa servir galetes",
+    "es": "Este sitio web no utiliza cookies"
+  },
+  "Contents": {
+    "ca": "Continguts",
+    "es": "Contenidos"
+  }
+}

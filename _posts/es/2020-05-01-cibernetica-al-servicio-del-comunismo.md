@@ -1,9 +1,8 @@
 ---
 uuid: 8a9feaca-9e90-4c16-b91d-0230b5502fd9
 title:  "Cibernética – al servicio del comunismo"
-date:   2020-05-01 13:00:00 +0200
+date:   2020-05-01T13:00:00+0200
 image:  cybernetics.png
-toc: true
 categories: Cibernética
 ---
 
@@ -18,6 +17,8 @@ _De Berg, trasluce su visión de una ciencia al servicio de la vida y las humani
 _En definitiva, es un documento que muestra los usos que se podría haber dado a la tecnología cibernética, y que hoy estamos a tiempo de dar a la tecnología informática._
 
 ---
+
+[[toc]]
 
 Introducción
 ------------

@@ -1,9 +1,8 @@
 ---
 title:  Implementing the search function in a static web site
-date:   2024-08-09 13:00:00 +0200
+date:   2024-08-09T13:00:00+0200
 image:  search.jpg
 image_caption: "Cuff's solar microscope in [\"Mikroskopische Gemüths - und Augen-Ergötzung\"](https://publicdomainreview.org/collection/microscopic-delights/), vol. 3, by M. F. Ledermüller (1759–63)."
-toc: true
 categories: Web
 ---
 

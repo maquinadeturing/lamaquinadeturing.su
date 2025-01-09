@@ -1,22 +1,22 @@
 <aside class="widget-area" itemscope="" itemtype="http://schema.org/WPSideBar">
     {% if page.toc_html %}
     <div class="widget element__frame widget_toc">
-        <h3 class="widget-title">{{ 'Contents' | localize: page.lang }}</h3>
+        <h3 class="widget-title">{{ 'Contents' | localize: lang }}</h3>
         {{ page.toc_html }}
     </div>
     {% endif %}
     <div class="widget element__frame widget_recent_entries">
-        <h3 class="widget-title">{{ 'Recent Posts' | localize: page.lang }}</h3>
+        <h3 class="widget-title">{{ 'Recent Posts' | localize: lang }}</h3>
         <ul>
-            {% for post_uuid in site.data.localized_posts limit:5 %}
-                {% assign post = post_uuid | find_prefered_translation: page.lang %}
+            {% for post_by_lang in collections.posts_by_lang limit:5 %}
+                {% assign post = post_by_lang.posts | find_prefered_translation: lang %}
             <li>
-                <a href="{{ post.url }}">{{ post.title }}</a>
-                {% if post.lang != page.lang %}
-                    <a href="{{ post.url }}" class="box-shadow lang-code">{{ post.lang }}</a>
-                    {% assign translations = post.uuid | translations: post.lang %}
+                <a href="{{ post.url }}">{{ post.data.title }}</a>
+                {% if post.data.lang != lang %}
+                    <a href="{{ post.url }}" class="box-shadow lang-code">{{ post.data.lang }}</a>
+                    {% assign translations = collections.posts | translations: post.data.uuid, post.data.lang %}
                     {% for translation in translations %}
-                        <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.lang }}</a>
+                        <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.data.lang }}</a>
                     {% endfor %}
                 {% endif %}
             </li>
@@ -32,13 +32,11 @@
         </ul>
     </div> -->
     <div class="widget element__frame widget_categories">
-        <h3 class="widget-title">{{ 'Categories' | localize: page.lang }}</h3>
+        <h3 class="widget-title">{{ 'Categories' | localize: lang }}</h3>
         <ul>
-            {% for category_group_pair in site.data.categories %}
-            {% assign categories = category_group_pair[1] | where: 'lang', page.lang %}
+            {% assign categories = collections.categories | where: 'lang', lang %}
             {% for category in categories %}
-            <li class="cat-item cat-item-2"><a href="{{ category.url }}">{{ category.title }}</a></li>
-            {% endfor %}
+            <li class="cat-item cat-item-2"><a href="{{ category.url | absolute_path }}">{{ category.title }}</a></li>
             {% endfor %}
         </ul>
     </div>

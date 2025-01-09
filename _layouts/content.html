@@ -6,37 +6,37 @@ layout: default
     <article itemprop="blogPost" itemscope="" itemtype="http://schema.org/BlogPosting" id="post-5"
         class="element__frame post type-post status-publish format-standard has-post-thumbnail hentry">
         <header class="entry-header">
-            <span class="posted-on">{{ page.date | localized_date: "%-d %b %Y", page.lang }}</span>
-            {% if page.categories != empty %}
+            <span class="posted-on">{{ date | localized_date: "%-d %b %Y", lang }}</span>
+            {% if categories != empty %}
             <div>
-            {% for category_name in page.categories %}
-            {% assign category = category_name | get_category_by_name: page.lang %}
-            <a href="{{ category.url }}" class="category-name" itemprop="articleSection">{{ category.title }}</a>
+            {% for category_uuid in categories %}
+            {% assign category = collections.categories | get_category_by_uuid: category_uuid, lang %}
+            <a href="{{ category.url | absolute_path }}" class="category-name" itemprop="articleSection">{{ category.title }}</a>
             {% endfor %}
             </div>
             {% endif %}
-            <h2 class="entry__title" itemprop="headline">{{ page.title }}</h2>
+            <h2 class="entry__title" itemprop="headline">{{ title }}</h2>
         </header>
         <div class="entry-content" itemprop="articleBody">
-            {% if page.image %}
-            {% if page.image_caption %}
-            {% assign image_alt = page.image_caption | markdownify | strip_html %}
+            {% if image %}
+            {% if image_caption %}
+            {% assign image_alt = image_caption | markdownify: lang | strip_html %}
             {% else %}
-            {% assign image_alt = page.title %}
+            {% assign image_alt = title %}
             {% endif %}
             <div class="entry-thumbnail-single landscape" itemprop="image">
-                <img {{ page.image | srcset:698,1078 }} sizes="(max-width: 800px) 698px, (max-width: 1200px) 1078px, 698px" class="attachment-large size-large wp-post-image" alt="{{ image_alt | strip | escape }}">
+                <img {{ image | srcset:698,1078 }} sizes="(max-width: 800px) 698px, (max-width: 1200px) 1078px, 698px" class="attachment-large size-large wp-post-image" alt="{{ image_alt | strip | escape }}">
             </div>
-            {% if page.image_caption %}
-            <div class="entry-thumbnail-caption">{{ page.image_caption | markdownify }}</div>
+            {% if image_caption %}
+            <div class="entry-thumbnail-caption">{{ image_caption | markdownify: lang }}</div>
             {% endif %}
             {% endif %}
 
-            {% assign translations = page.uuid | translations: page.lang %}
+            {% assign translations = collections.posts | translations: uuid, lang %}
             {% if translations != empty %}
-                <p class="entry__meta translations-box"><span class="lang-icon"></span> {{ 'Also available in' | localize: page.lang }}:
+                <p class="entry__meta translations-box"><span class="lang-icon"></span> {{ 'Also available in' | localize: lang }}:
                     {% for translation in translations %}
-                        <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.lang }}</a>
+                        <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.data.lang }}</a>
                     {% endfor %}
                 </p>
             {% endif %}
@@ -82,6 +82,6 @@ layout: default
 
 <div class="grid__item">
 
-    {% include sidebar.html %}
+    {% include "sidebar.html" %}
 
 </div>

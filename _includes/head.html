@@ -1,30 +1,31 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang }}">
+<html lang="{{ lang }}">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">{% if page.layout == 'post' %}
-    <title>{{ page.title }} – {{ site.title }}</title>
-    <meta property="og:title" content="{{ page.title }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">{% if layout == 'post' %}
+    <meta name="generator" content="{{ eleventy.generator }}">
+    <title>{{ title }} – {{ site.title }}</title>
+    <meta property="og:title" content="{{ title }}">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="{{ page.url | absolute_url }}">{% if page.image %}
-    <meta property="og:image" content="{{ page.image | image_path:1200 | absolute_url }}">{% endif %}{% elsif page.layout == 'home' %}
+    <meta property="og:url" content="{{ page.url | absolute_url }}">{% if image %}
+    <meta property="og:image" content="{{ image | image_path:1200 | absolute_url }}">{% endif %}{% elsif layout == 'home' %}
     <title>{{ site.title }} – {{ site.description }}</title>
     <meta property="og:title" content="{{ site.title }}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ site.url | absolute_url }}">{% elsif page.layout == 'archive' %}
-    <title>{{ 'Category' | localize: page.lang }}: {{ page.title }} – {{ site.title }}</title>
-    <meta property="og:title" content="{{ 'Category' | localize: page.lang }}: {{ page.title }}">
+    <meta property="og:url" content="{{ site.url | absolute_url }}">{% elsif layout == 'archive' %}
+    <title>{{ 'Category' | localize: lang }}: {{ title }} – {{ site.title }}</title>
+    <meta property="og:title" content="{{ 'Category' | localize: lang }}: {{ title }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ page.url | absolute_url }}">{% endif %}
-    {% inline_assets %}
+    {% import_assets %}
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
     <link rel="dns-prefetch" href="https://s.w.org/">
     <script>
-        const page_lang = "{{ page.lang }}";
+        const page_lang = "{{ lang }}";
         const site_languages = {{ site.languages | jsonify }};
     </script>
-    <script defer data-domain="lamaquinadeturing.su" src="https://plausible.factoria.lu/js/script.js"></script>
+    <!-- <script defer data-domain="lamaquinadeturing.su" src="https://plausible.factoria.lu/js/script.js"></script> -->
 </head>

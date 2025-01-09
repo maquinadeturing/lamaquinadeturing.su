@@ -1,7 +1,7 @@
 ---
 uuid: 1f8fbc0d-7856-4f82-9cf1-19b2738e90fd
 title:  "“Cibernética” (en el Breve diccionario filosófico, 1954)"
-date:   2020-04-13 12:00:00 +0200
+date:   2020-04-13T12:00:00+0200
 image:  breve-diccionario-filosofico.jpg
 categories: Cibernética Lzhenaúka
 ---
