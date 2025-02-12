@@ -1,0 +1,14 @@
+---
+pagination:
+  data: collections.categories
+  size: 1
+  alias: category
+permalink: "{{ category.lang }}/{{ category.title | slugify-utf8 }}/"
+layout: archive
+layout_variant: collection
+eleventyComputed:
+  title: "{{ category.title }}"
+  lang: "{{ category.lang }}"
+  uuid: "{{ category.uuid }}"
+  category_content: "{{ category.description }}"
+---

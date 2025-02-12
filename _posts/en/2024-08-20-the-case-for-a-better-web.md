@@ -1,7 +1,7 @@
 ---
 uuid:   7aba63cf-f969-404f-bdcc-82c702abc24a
 title:  "The case for a better web"
-date:   2024-08-20 16:00:00 +0200
+date:   2024-08-20T16:00:00+0200
 image:  ocean.jpg
 image_caption: >
   "Nature in Descending Regions" by Walter Levi Yaggy (1893).

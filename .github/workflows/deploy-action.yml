@@ -21,10 +21,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        bundle install --retry 3
+        npm install
 
     - name: Build the site
-      run: bundle exec jekyll build
+      run: |
+        npx @11ty/eleventy
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4

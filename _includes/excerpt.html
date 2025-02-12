@@ -1,48 +1,42 @@
-{% if include.post_uuid != nil %}
-    {% assign post = include.post_uuid | find_prefered_translation: page.lang %}
-{% endif %}
-
 <div class="grid__item">
     <article
         class="element__frame post type-post status-publish format-standard has-post-thumbnail hentry"
         itemprop="blogPost" itemscope="" itemtype="http://schema.org/blogPosting">
-        <header class="entry-header"><span class="posted-on">{{ post.date | localized_date: "%-d %b %Y", page.lang }}</span>
-            {% if post.lang != page.lang %}
-                <p class="entry__meta translations-box"><span class="lang-icon"></span> {{ 'Only available in' | localize: page.lang }}:
-                    <a href="{{ post.url }}" class="box-shadow lang-code">{{ post.lang }}</a>
-                    {% assign translations = post.uuid | translations: post.lang %}
+        <header class="entry-header"><span class="posted-on">{{ post.date | localized_date: "%-d %b %Y", lang }}</span>
+            {% if post.data.lang != lang %}
+                <p class="entry__meta translations-box"><span class="lang-icon"></span> {{ 'Only available in' | localize: lang }}:
+                    <a href="{{ post.url }}" class="box-shadow lang-code">{{ post.data.lang }}</a>
+                    {% assign translations = collections.posts | translations: post.data.uuid, post.data.lang %}
                     {% for translation in translations %}
-                        <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.lang }}</a>
+                        <a href="{{ translation.url }}" class="box-shadow lang-code">{{ translation.data.lang }}</a>
                     {% endfor %}
                 </p>
             {% endif %}
-            <h3 class="entry__title" itemprop="headline"><a href="{{ post.url }}">{{ post.title }}</a></h3>
+            <h3 class="entry__title" itemprop="headline"><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
         </header>
-        {% if post.image %}
-        {% if post.image_caption %}
-        {% assign image_alt = post.image_caption | markdownify | strip_html %}
+        {% if post.data.image %}
+        {% if post.data.image_caption %}
+        {% assign image_alt = post.data.image_caption | markdownify: lang | strip_html %}
         {% else %}
-        {% assign image_alt = post.title %}
+        {% assign image_alt = post.data.title %}
         {% endif %}
-        <a href="{{ post.url }}" class="entry-thumbnail"><img {{ post.image | srcset:478,618 }} sizes="(max-width: 800px) 478px, (max-width: 1200px) 618px, 478px" alt="{{ image_alt }}"></a>
+        <a href="{{ post.url }}" class="entry-thumbnail"><img {{ post.data.image | srcset:"478,618" }} sizes="(max-width: 800px) 478px, (max-width: 1200px) 618px, 478px" alt="{{ image_alt }}"></a>
         {% endif %}
 
         <div class="clear"></div>
 
         <footer class="entry-meta homepage">
-            <meta itemprop="mainEntityOfPage" content="Guia: Com descarregar un vídeo en streaming"><span
-                itemprop="author publisher" itemscope="" itemtype="http://schema.org/Organization">
-                <meta itemprop="name" content="turing"><span itemprop="logo" itemscope=""
-                    itemtype="http://schema.org/ImageObject">
+            <meta itemprop="mainEntityOfPage" content="{{ post.data.title }}">
+            <span itemprop="author publisher" itemscope="" itemtype="http://schema.org/Organization">
+                <meta itemprop="name" content="turing">
+                <span itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
                     <meta itemprop="url" content="">
                 </span>
-
-
                 <meta itemprop="url" content="https://lamaquinadeturing.su">
             </span>
 
             <p class="posted-on">Published on <a href="{{ post.url }}"><time class="entry-date published updated"
-                        datetime="2021-08-24T17:28:13+00:00" itemprop="datePublished">{{ post.date | localized_date: "%-d %b %Y", page.lang }}</time></a></p>
+                        datetime="{{ post.date }}" itemprop="datePublished">{{ post.date | localized_date: "%-d %b %Y", lang }}</time></a></p>
         </footer>
     </article>
 </div>

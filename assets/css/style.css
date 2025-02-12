@@ -197,7 +197,7 @@ blockquote:before {
     text-align: left;
 }
 
-.textcenter {
+.textcenter, .text-align-center {
     text-align: center;
 }
 

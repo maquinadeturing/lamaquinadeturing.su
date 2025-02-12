@@ -1,7 +1,7 @@
 article a[class^="link-"]::after {
   content: "";
-  width: 16px;
-  height: 16px;
+  width: 0.8em;
+  height: 0.8em;
   margin-left: 4px;
   background-position: center;
   background-repeat: no-repeat;
@@ -27,4 +27,9 @@ article a.link-archive::after
 article a.link-mastodon::after
 {
   background-image: url("/assets/img/mastodon.svg");
+}
+
+article a.link-github::after
+{
+  background-image: url("/assets/img/github.svg");
 }

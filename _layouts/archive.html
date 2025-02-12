@@ -1,8 +1,23 @@
 ---
 layout: default
-variant: collection
 ---
 
-{% for post_uuid in page.localized_posts %}
-    {% include excerpt.html post_uuid=post_uuid %}
+{% if layout_variant == "home" %}
+
+{% assign posts = collections.posts | localized_posts: lang %}
+{% for post in posts %}
+    {% assign posts_collection = "posts" | js_object: collections.posts %}
+    {% assign template_data = "post" | js_object: post, "lang", lang, "collections", posts_collection %}
+    {% renderFile "./_includes/excerpt.html", template_data %}
 {% endfor %}
+
+{% elsif layout_variant == "collection" %}
+
+{% assign posts = collections.posts | localized_category_posts: uuid, lang %}
+{% for post in posts %}
+    {% assign posts_collection = "posts" | js_object: collections.posts %}
+    {% assign template_data = "post" | js_object: post, "lang", lang, "collections", posts_collection %}
+    {% renderFile "./_includes/excerpt.html", template_data %}
+{% endfor %}
+
+{% endif %}

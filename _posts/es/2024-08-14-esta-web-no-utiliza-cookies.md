@@ -1,7 +1,7 @@
 ---
 uuid:   13a6951e-b007-4b51-bdab-f679e25023fd
 title:  "Esta web no utiliza cookies"
-date:   2024-08-14 19:00:00 +0200
+date:   2024-08-14T19:00:00+0200
 image:  questioning-moon.jpg
 image_caption: >
   ["A l'Horizon, l'Ange des Certitudes, et Dans le Ciel Sombre un Regard Interrogateur"](https://publicdomainreview.org/collection/odilon-redon-a-edgar-poe/)
