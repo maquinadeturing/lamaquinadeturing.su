@@ -56,7 +56,7 @@ function renderMermaidToSvg(code) {
     console.log(`Rendering Mermaid diagram from ${tmpFile.name} to ${svgFile.name}`);
 
     try {
-        execSync(`npx mmdc -i ${tmpFile.name} -o ${svgFile.name}`, { encoding: "utf-8" });
+        execSync(`mmdc -i ${tmpFile.name} -o ${svgFile.name}`, { encoding: "utf-8" });
         return fs.readFileSync(svgFile.name, { encoding: "utf-8" });
     } catch (err) {
         throw new Error(`Failed to render Mermaid diagram: ${err.message}`);
