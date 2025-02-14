@@ -1,4 +1,5 @@
 import fs from "fs";
+import { validate as uuidValidate, version as uuidVersion } from "uuid";
 
 let languages = [];
 
@@ -212,11 +213,19 @@ export const mdUuidToLinkPlugin = (md, options) => {
     const decorateLink = (tokens, idx, options, env, self, defaultRender) => {
         const href = tokens[idx].attrGet("href");
 
-        if (href && uuidToPost[href]) {
+        if (href && uuidValidate(href)) {
+            if (uuidVersion(href) !== 4) {
+                throw new Error(`Invalid UUID version: ${href}`);
+            }
+
             const post_lang = env.lang;
             const languages = env.site.languages;
 
             const posts_by_lang = uuidToPost[href];
+
+            if (!posts_by_lang) {
+                throw new Error(`No post found for UUID ${href}`);
+            }
 
             let permalink = null;
 
