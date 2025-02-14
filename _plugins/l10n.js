@@ -11,9 +11,21 @@ export default function (eleventyConfig, options = {}) {
         return localizationStrings[text][lang] || text;
     });
 
-    eleventyConfig.addFilter("translation_url", (uuid, lang) => {
-        // TODO
-        return "/";
+    eleventyConfig.addFilter("translation_url", (collection, uuid, lang) => {
+        const translated_posts = collection.filter((post) => post.data.uuid === uuid);
+
+        for (const post of translated_posts) {
+            if (post.data.lang === lang) {
+                return post.url;
+            }
+        }
+
+        for (const lang of languages) {
+            const post = translated_posts.find((post) => post.data.lang === lang);
+            if (post) return post.url;
+        }
+
+        throw new Error(`No translation found for ${uuid} in ${lang}`);
     });
 
     eleventyConfig.addFilter("localized_date", localizedDate);

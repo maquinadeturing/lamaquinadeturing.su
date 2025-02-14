@@ -25,9 +25,9 @@
 
         <ul id="primary-menu" class="pull clear">
             <li class="menu-item mobile-media"><span>{{ lang }}</span></li>
-            {% for lang in site.languages %}
-                {% if lang != lang %}
-                    <li class="menu-item mobile-media"><a href="{{ lang | absolute_path }}">{{ lang }}</a></li>
+            {% for site_lang in site.languages %}
+                {% if site_lang != lang %}
+                    <li class="menu-item mobile-media"><a href="{{ site_lang | absolute_path }}">{{ site_lang }}</a></li>
                 {% endif %}
             {% endfor %}
 

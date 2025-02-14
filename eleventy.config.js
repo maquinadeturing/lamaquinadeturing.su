@@ -21,8 +21,10 @@ import { mdUuidToLinkPlugin } from "./_plugins/l10n.js";
 import mdMermaidPlugin from "./_plugins/mermaid.js";
 
 const languages = ["ca", "en", "es"];
+
 // This is filled while creating the collections... using global data is not recommended,
 // but it's the only way to have the data available in the Markdown renderer
+// See the comment in the collections section
 const uuidToPost = {};
 
 export default async function (eleventyConfig) {
@@ -128,6 +130,10 @@ export default async function (eleventyConfig) {
     //= Collections
 
     eleventyConfig.addCollection("categories", function (collectionApi) {
+        // HACK: this resets uuidToPost before it is filled again in the posts collection
+        // This is needed when running eleventy --serve, to avoid duplicating entries in uuidToPost
+        Object.keys(uuidToPost).forEach(key => delete uuidToPost[key]);
+
         const categories = getCategories(collectionApi.getFilteredByGlob("./_posts/**/*.md"), eleventyConfig.dir.data);
         const category_map = {};
 
@@ -163,6 +169,7 @@ export default async function (eleventyConfig) {
         const lang = post.inputPath.split("/")[2];
         const uuid = post.data.uuid;
 
+        // See the comment at the top of the file
         uuidToPost[uuid] = uuidToPost[uuid] || {};
         uuidToPost[uuid][lang] = post;
 
