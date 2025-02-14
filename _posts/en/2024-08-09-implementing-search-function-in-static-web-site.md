@@ -1,4 +1,5 @@
 ---
+uuid: ee3a1b4d-092e-459d-82eb-f9d25038f4a3
 title:  Implementing the search function in a static web site
 date:   2024-08-09T13:00:00+0200
 image:  search.jpg
