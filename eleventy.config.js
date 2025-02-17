@@ -3,7 +3,7 @@ import MarkdownIt from "markdown-it";
 
 // 11ty plugins
 import { EleventyRenderPlugin } from "@11ty/eleventy";
-import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import syntaxHighlightPlugin from "@11ty/eleventy-plugin-syntaxhighlight";
 
 // Custom plugins
 import { default as slugifyPlugin, slugify } from "./_plugins/slugify.js";
@@ -19,6 +19,7 @@ import mdFootnotesPlugin from "markdown-it-footnote";
 import mdDecorateLinksPlugin from "./_plugins/decorate_links.js";
 import { mdUuidToLinkPlugin } from "./_plugins/l10n.js";
 import mdMermaidPlugin from "./_plugins/mermaid.js";
+import mdInlineCodePlugin from "./_plugins/inline_code.js";
 
 const languages = ["ca", "en", "es"];
 
@@ -28,8 +29,6 @@ const languages = ["ca", "en", "es"];
 const uuidToPost = {};
 
 export default async function (eleventyConfig) {
-    eleventyConfig.addPlugin(syntaxHighlight);
-
     //= Site settings
 
     // Use Jekyll's _layout directory for layouts
@@ -122,6 +121,7 @@ export default async function (eleventyConfig) {
     //= Plugins
 
     eleventyConfig.addPlugin(EleventyRenderPlugin);
+    eleventyConfig.addPlugin(syntaxHighlightPlugin);
 
     eleventyConfig.addPlugin(slugifyPlugin);
     eleventyConfig.addPlugin(l10nPlugin, { languages, localizationPath: "./_data/localization.json" });
@@ -235,5 +235,6 @@ export default async function (eleventyConfig) {
         .use(mdCenterTextPlugin)
         .use(mdFootnotesPlugin)
         .use(mdMermaidPlugin)
+        .use(mdInlineCodePlugin)
     );
 };
