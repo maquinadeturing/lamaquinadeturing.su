@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
-import crypto from 'crypto';
+
+import deterministicUuidV4 from './deterministic_uuid.js';
 
 import { slugifyUnicode } from './slugify.js';
 
@@ -32,7 +32,7 @@ export const getCategories = (posts, dataDirectory) => {
         let category_uuid = null;
         let counter = 0;
         do {
-            category_uuid = deterministic_uuid4(`${category_name.toLowerCase()}-${counter++}`);
+            category_uuid = deterministicUuidV4(`${category_name.toLowerCase()}-${counter++}`);
         } while (all_uuids.has(category_uuid));
         return category_uuid;
     };
@@ -77,10 +77,4 @@ function loadCategoriesFromPosts(posts) {
     return Object.fromEntries(Object.entries(all_categories).map(([lang, categories]) => {
         return [lang, Array.from(categories)];
     }));
-}
-
-function deterministic_uuid4(seed) {
-    const buffer = crypto.createHash('sha256').update(seed).digest();
-    const seed_16_bytes = buffer.subarray(0, 16);
-    return uuidv4({ random: seed_16_bytes });
 }
