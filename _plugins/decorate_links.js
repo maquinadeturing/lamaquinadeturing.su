@@ -3,17 +3,10 @@ export default (md, options) => {
         const href = tokens[idx].attrGet("href");
 
         if (href && href.match(/^https?:\/\/.+/)) {
-            const addClass = (newClass) => {
-                const classValue = tokens[idx].attrGet("class");
-                const classes = classValue ? classValue.split(/ +/) : [];
-                classes.push(newClass);
-                tokens[idx].attrSet("class", classes.join(" "));
-            }
-
             const url = new URL(href);
 
             if (url.pathname.startsWith("/@")) {
-                addClass("link-mastodon");
+                tokens[idx].attrJoin("class", "link-mastodon");
             } else {
                 const top_domain = url.hostname.split(".").slice(-2).join(".");
 
@@ -22,11 +15,11 @@ export default (md, options) => {
                     case "wikimedia.org":
                     case "wiktionary.org":
                     case "wikisource.org":
-                        addClass("link-wikipedia");
+                        tokens[idx].attrJoin("class", "link-wikipedia");
                         break;
-                    case "archive.org": addClass("link-archive"); break;
-                    case "github.com": addClass("link-github"); break;
-                    default: addClass("link-external"); break;
+                    case "archive.org": tokens[idx].attrJoin("class", "link-archive"); break;
+                    case "github.com": tokens[idx].attrJoin("class", "link-github"); break;
+                    default: tokens[idx].attrJoin("class", "link-external"); break;
                 }
             }
         }
