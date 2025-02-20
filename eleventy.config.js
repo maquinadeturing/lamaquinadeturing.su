@@ -3,7 +3,6 @@ import MarkdownIt from "markdown-it";
 
 // 11ty plugins
 import { EleventyRenderPlugin } from "@11ty/eleventy";
-import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 
 // Custom plugins
 import { default as slugifyPlugin, slugify } from "./_plugins/slugify.js";
@@ -16,9 +15,12 @@ import mdAnchorPlugin from "markdown-it-anchor";
 import mdTocPlugin from "markdown-it-table-of-contents";
 import mdCenterTextPlugin from "markdown-it-center-text";
 import mdFootnotesPlugin from "markdown-it-footnote";
+import mdAttrsPlugin from "markdown-it-attrs";
+import mdPrismPlugin from "markdown-it-prism";
 import mdDecorateLinksPlugin from "./_plugins/decorate_links.js";
 import { mdUuidToLinkPlugin } from "./_plugins/l10n.js";
 import mdMermaidPlugin from "./_plugins/mermaid.js";
+import mdInlineCodePlugin from "./_plugins/inline_code.js";
 
 const languages = ["ca", "en", "es"];
 
@@ -28,8 +30,6 @@ const languages = ["ca", "en", "es"];
 const uuidToPost = {};
 
 export default async function (eleventyConfig) {
-    eleventyConfig.addPlugin(syntaxHighlight);
-
     //= Site settings
 
     // Use Jekyll's _layout directory for layouts
@@ -228,6 +228,7 @@ export default async function (eleventyConfig) {
     });
 
     eleventyConfig.amendLibrary("md", (mdLib) => mdLib
+        .use(mdAttrsPlugin)
         .use(mdAnchorPlugin, { permalink: true, permalinkClass: "heading-link", permalinkSymbol: "§" })
         .use(mdDecorateLinksPlugin)
         .use(mdUuidToLinkPlugin, { uuidToPost })
@@ -235,5 +236,7 @@ export default async function (eleventyConfig) {
         .use(mdCenterTextPlugin)
         .use(mdFootnotesPlugin)
         .use(mdMermaidPlugin)
+        .use(mdInlineCodePlugin)
+        .use(mdPrismPlugin)
     );
 };

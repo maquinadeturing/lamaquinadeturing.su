@@ -45,7 +45,7 @@ As this site uses Jekyll, the static generation of the index would be in Ruby, w
 
 I'll show some snippets of code, but they are greatly simplified and are not expected to actually run:
 
-{% highlight ruby %}
+```ruby
 index = {}
 site.posts.docs.each do |post|
     rendered_content = site
@@ -59,13 +59,13 @@ site.posts.docs.each do |post|
 
     text_content = html_content.gsub(/<\/?[^>]*>/, ' ')
     ...
-{% endhighlight %}
+```
 
 In this iterator, the posts of the site are programmatically rendered using the Liquid parser and the Markdown converter to HTML. The result is the HTML as it would be displayed by the web browser. Then, the HTML tags are stripped, so what remains is the pure text content.
 
 Let's get the words:
 
-{% highlight ruby %}
+```ruby
     ...
     lang = post.data['lang']
     valid_chars = 'a-zA-Z0-9áéíóúàèìòùäëïöüâêîôûçñÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÂÊÎÔÛÇÑ·'
@@ -79,7 +79,7 @@ Let's get the words:
         .sort
         .uniq
     ...
-{% endhighlight %}
+```
 
 Here the `text_content` string is filtered, excluding anything that is not a valid character in one of the languages of the blog. This means that punctuation marks or other symbols are removed.
 
@@ -87,7 +87,7 @@ Then, the resulting string is split by words, excluding short ones or numbers. A
 
 Finally, the words are sorted and duplicates are removed. Great! This is the list of unique words from one post, after removing garbage like stopwords, short words or numbers. Let's add them to the index:
 
-{% highlight ruby %}
+```ruby
     ...
     words.each do |word, count|
         index[lang] ||= {}
@@ -95,37 +95,49 @@ Finally, the words are sorted and duplicates are removed. Great! This is the lis
         index[lang][word] << post_index
     end
 end
-{% endhighlight %}
+```
 
 Note that per each word in a given language, it maps to a list of posts referenced by an "index". This index is the position in the array of posts at the end of the index structure.
 
 Let's use an example. The following snippet is taken from the Markdown source of this [post](28623ef9-070a-464c-889c-f5a42fac3cd4/en):
 
-`**Cybernetics**[^1], the science of the common features of processes and control systems in technological devices, living organisms and human organisations. The principles of C. were first set forth by Wiener (q.v.)`
+```plain {.wrap}
+**Cybernetics**[^1], the science of the common features of processes and control systems in technological devices, living organisms and human organisations. The principles of C. were first set forth by Wiener (q.v.)
+```
 
 After rendering it:
 
-`<p><strong>Cybernetics</strong><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>, the science of the common features of processes and control systems in technological devices, living organisms and human organisations. The principles of C. were first set forth by Wiener (q.v.).<p>`
+```plain {.wrap}
+<p><strong>Cybernetics</strong><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>, the science of the common features of processes and control systems in technological devices, living organisms and human organisations. The principles of C. were first set forth by Wiener (q.v.).<p>
+```
 
 After removing the HTML tags:
 
-`Cybernetics 1, the science of the common features of processes and control systems in technological devices, living organisms and human organisations. The principles of C. were first set forth by Wiener (q.v.).`
+```plain {.wrap}
+Cybernetics 1, the science of the common features of processes and control systems in technological devices, living organisms and human organisations. The principles of C. were first set forth by Wiener (q.v.).
+```
 
 Removing the invalid characters:
 
-`Cybernetics 1 the science of the common features of processes and control systems in technological devices living organisms and human organisations The principles of C were first set forth by Wiener q v`
+```plain {.wrap}
+Cybernetics 1 the science of the common features of processes and control systems in technological devices living organisms and human organisations The principles of C were first set forth by Wiener q v
+```
 
 And after filtering out short words, numbers and stopwords:
 
-`Cybernetics science common features processes control systems technological devices living organisms human organisations principles set forth Wiener`
+```plain {.wrap}
+Cybernetics science common features processes control systems technological devices living organisms human organisations principles set forth Wiener
+```
 
 Last step, sorting and removing repeated words:
 
-`common control cybernetics devices features forth human living organisations organisms principles processes science set systems technological wiener`
+```plain {.wrap}
+common control cybernetics devices features forth human living organisations organisms principles processes science set systems technological wiener
+```
 
 From this, the index would look as follows:
 
-{% highlight json %}
+```json
 {
     "index": {
         "en": {
@@ -157,7 +169,7 @@ From this, the index would look as follows:
         }
     ]
 }
-{% endhighlight %}
+```
 
 The current JSON search index in this format for the 7 posts in 3 languages of the site is 52 KB. Not bad compared to the 141 KB of Lunr for just 3 posts. All in all, 50 KB or 140 KB may be are not very important nowadays, as some images in this site are larger than that. But I'd like this blog to grow enough so the size of the index matters.
 
@@ -183,7 +195,7 @@ Now that the search index is generated, it's time to do some searching in the we
 
 The search index contains (almost) all the words of the posts. A trivial approach would be to take the search query word by word and try to match it against the index. Every time there is a match, one point is given to the matched posts. If the query has 4 words, then the maximum score would be 4. The matching posts are displayed sorted by their score.
 
-{% highlight javascript %}
+```js
 function search(query, word_map) {
   const query_words = [... new Set(
     to_ansi(query)
@@ -204,7 +216,7 @@ function search(query, word_map) {
   });
   return results;
 }
-{% endhighlight %}
+```
 
 That will be the base search algorithm, but I would like it to be slightly smarter than that. After all, we are all used to fancy search engines that will find similar words, or match just prefixes. Instead of doing an exact match of the words in the index, the search could find _similar_ words. An obvious optimization is to ignore accents. But how to match other similarities? For instance, "cybernetics" is very similar to "cibernètica" (Catalan).
 
@@ -212,7 +224,7 @@ Enter Levenshtein.
 
 The _similarity_ between two words could be defined as the _distance_ between these words. This is what the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) function does: it calculates how far away two words are. The distance is defined as how many letters need to be added, removed or substituted to go from one word to the other. In the case of "cybernetics", it needs 2 substitutions to become "cibernètica", if we ignore the accents.
 
-{% highlight javascript %}
+```js
 function search(query, word_map) {
   const query_words = [... new Set(
     to_ansi(query)
@@ -236,7 +248,7 @@ function search(query, word_map) {
   });
   return results;
 }
-{% endhighlight %}
+```
 
 Good, we now have a precise definition of similarity. So the search algorithm can match not only exact words from the index, but also similar words whose Levenshtein distance is below a certain threshold (in particular, the maximum distance allowed is 1/3 of the length of the word, in other words, two words should share 2/3 of their letters to be considered similar).
 
@@ -246,7 +258,7 @@ But there is another difference between this code and the previous one: before i
 
 Let's bring some friends of Levenshtein to the party. In particular, Burkhard and Keller and their tree structure, the [BK-Tree](https://en.wikipedia.org/wiki/BK-tree). A BK-Tree is a data structure that can organize values based on their relative distance, and allows to quickly navigate it to find the values with a similarity below the given threshold.
 
-{% highlight javascript %}
+```js
 function build_forest(word_map) {
   let forest = new Map;
   index.forEach((lang, word_map) => {
@@ -282,7 +294,7 @@ function search(query, word_map) {
   });
   return results;
 }
-{% endhighlight %}
+```
 
 In this new code, a BK-Tree is constructed for each word index, and now these trees can be used to search for similar words below a certain threshold with a time complexity of O(log n). That's more like it.
 
@@ -294,7 +306,7 @@ Implementing a prefix match for all the words is possible, for instance with a [
 
 Still, what is overkill for the content can be adequate if limited to the title. In addition to the score provided by the fuzzy search with the word map, I also added a substring search:
 
-{% highlight javascript %}
+```js
 function search_titles(query, post_list) {
   const query_words = [... new Set(
     to_ansi(query)
@@ -318,7 +330,7 @@ function search_titles(query, post_list) {
   }
   return results;
 }
-{% endhighlight %}
+```
 
 The previous code takes the words of the search query and checks if they are a substring of a post title. For each word that is a substring of a title, that post gets 1 point. The score of the title search is added to the score of the fuzzy search, and that is how posts are displayed in the search box and how they are sorted.
 
