@@ -2,7 +2,8 @@ import { URL } from "url";
 import MarkdownIt from "markdown-it";
 
 // 11ty plugins
-import { EleventyRenderPlugin } from "@11ty/eleventy";
+import { EleventyRenderPlugin as eleventyRenderPlugin } from "@11ty/eleventy";
+import eleventyFeedPlugin from "@11ty/eleventy-plugin-rss";
 
 // Custom plugins
 import { default as slugifyPlugin, slugify } from "./_plugins/slugify.js";
@@ -46,8 +47,9 @@ export default async function (eleventyConfig) {
         url: "https://lamaquinadeturing.su",
         languages,
         social: {
-            mastodon_username: "@urixturing@mastodont.cat",
-            github_link: "https://github.com/maquinadeturing/lamaquinadeturing.su",
+            mastodon: "@urixturing@mastodont.cat",
+            github: "https://github.com/maquinadeturing/lamaquinadeturing.su",
+            rss: "/feed.xml",
         }
     });
 
@@ -108,20 +110,21 @@ export default async function (eleventyConfig) {
 
     //= Passthrough
     for (const file of [
-            "android-chrome-192x192.png",
-            "android-chrome-512x512.png",
-            "apple-touch-icon.png",
-            "favicon-16x16.png",
-            "favicon-32x32.png",
-            "favicon.ico",
-            "CNAME", // needed by GitHub Pages
-        ]) {
+        "android-chrome-192x192.png",
+        "android-chrome-512x512.png",
+        "apple-touch-icon.png",
+        "favicon-16x16.png",
+        "favicon-32x32.png",
+        "favicon.ico",
+        "CNAME", // needed by GitHub Pages
+    ]) {
         eleventyConfig.addPassthroughCopy(file);
     }
 
     //= Plugins
 
-    eleventyConfig.addPlugin(EleventyRenderPlugin);
+    eleventyConfig.addPlugin(eleventyRenderPlugin);
+    eleventyConfig.addPlugin(eleventyFeedPlugin);
 
     eleventyConfig.addPlugin(slugifyPlugin);
     eleventyConfig.addPlugin(l10nPlugin, { languages, localizationPath: "./_data/localization.json" });

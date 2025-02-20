@@ -56,14 +56,17 @@
             <p class="bar__title">
                 {{ 'Social' | localize: lang }} </p>
         </li>
-        {% if site.social.mastodon_username %}
-            {% assign parts = site.social.mastodon_username | split: "@" %}
+        {% if site.social.mastodon %}
+            {% assign parts = site.social.mastodon | split: "@" %}
             {% assign user = parts[1] %}
             {% assign instance = parts[2] %}
         <li><a href="https://{{ instance }}/@{{ user }}"><img src="/assets/img/mastodon.svg" width="12" height="12"></a></li>
         {% endif %}
-        {% if site.social.github_link %}
-        <li><a href="{{ site.social.github_link }}"><img src="/assets/img/github.svg" width="12" height="12"></a></li>
+        {% if site.social.github %}
+        <li><a href="{{ site.social.github }}"><img src="/assets/img/github.svg" width="12" height="12"></a></li>
+        {% endif %}
+        {% if site.social.rss %}
+        <li><a href="{{ site.social.rss }}"><img src="/assets/img/rss.svg" width="12" height="12"></a></li>
         {% endif %}
     </ul>
     {% endif %}
