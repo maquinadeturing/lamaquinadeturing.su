@@ -1,0 +1,10 @@
+figure.quote {
+    margin: 0;
+}
+
+figure.quote figcaption.quote-citation {
+    padding-left: 4rem;
+    font-size: .7rem;
+    color: var(--color-indifferent);
+    margin-top: -0.5rem;
+}

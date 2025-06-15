@@ -130,10 +130,6 @@ img {
     height: auto;
 }
 
-figure {
-    max-width: 600px !important;
-}
-
 input[type="text"],
 input[type="email"],
 input[type="url"],
@@ -186,6 +182,8 @@ td {
 }
 
 blockquote {
+    margin-left: 0;
+    margin-right: 0;
     border: 0;
     padding-left: 4rem;
     position: relative;
