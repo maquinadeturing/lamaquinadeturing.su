@@ -146,7 +146,7 @@ La meva conclusió és que la distinció basada en la definició de "plataformes
 [^UK-pay1]: _‘Consent or pay’: Why UK news websites are getting tough with readers over data,_ PressGazette, 12 de setembre de 2024 ([en línia](https://pressgazette.co.uk/marketing/consent-or-pay-news-websites-uk/)).
 [^UK-pay2]: _Guardian, GB News and Newsquest among latest publishers to tell readers: ‘consent or pay’,_ PressGazette, 14 de març de 2025 ([en línia](https://pressgazette.co.uk/marketing/cookies-consent-or-pay-guardian-gb-news-newsquest-city-am/)).
 [^CNIL]: _Cookie walls : la CNIL publie des premiers critères d’évaluation,_ CNIL ([en línia](https://www.cnil.fr/fr/cookie-walls-la-cnil-publie-des-premiers-criteres-devaluation)).
-[^LFD]: _„Pay or Okay“ on tech news site heise.de illegal, decides German DPA,_ NOYB, 14 de juliol de 2023 ([en línia][https://noyb.eu/en/pay-or-okay-tech-news-site-heisede-illegal-decides-german-dpa]).
+[^LFD]: _„Pay or Okay“ on tech news site heise.de illegal, decides German DPA,_ NOYB, 14 de juliol de 2023 ([en línia](https://noyb.eu/en/pay-or-okay-tech-news-site-heisede-illegal-decides-german-dpa)).
 [^DSA]: _DSA: Very large online platforms and search engines,_ Comissió Europea, 12 de febrer de 2025 ([en línia](https://digital-strategy.ec.europa.eu/en/policies/dsa-vlops)).
 [^NOYB-Opinion-payokay]: _EDPB Opinion: Meta cannot rely on "Pay or Okay",_ NOYB, 17 d'abril de 2024 ([en línia](https://noyb.eu/en/statement-edpb-pay-or-okay-opinion)).
 [^NOYB-preu]: _"Pay or Okay": 1,500 € a year for your online privacy?,_ NOYB, 19 de març de 2024 ([en línia](https://noyb.eu/en/pay-or-okay-1500-eu-year-your-online-privacy)).
