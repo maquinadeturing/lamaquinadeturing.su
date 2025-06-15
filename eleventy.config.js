@@ -11,13 +11,15 @@ import l10nPlugin from "./_plugins/l10n.js";
 import assetsPlugin from "./_plugins/assets.js";
 import { getCategories } from "./_plugins/categories.js";
 
-// Markdown-it plugins
+// Third-party markdown-it plugins
 import mdAnchorPlugin from "markdown-it-anchor";
 import mdTocPlugin from "markdown-it-table-of-contents";
 import mdCenterTextPlugin from "markdown-it-center-text";
 import mdFootnotesPlugin from "markdown-it-footnote";
 import mdAttrsPlugin from "markdown-it-attrs";
 import mdPrismPlugin from "markdown-it-prism";
+import mdAttribution from "markdown-it-attribution";
+// Custom markdown-it plugins
 import mdDecorateLinksPlugin from "./_plugins/decorate_links.js";
 import { mdUuidToLinkPlugin } from "./_plugins/l10n.js";
 import mdMermaidPlugin from "./_plugins/mermaid.js";
@@ -231,15 +233,22 @@ export default async function (eleventyConfig) {
     });
 
     eleventyConfig.amendLibrary("md", (mdLib) => mdLib
+        // Third-party plugins
         .use(mdAttrsPlugin)
-        .use(mdAnchorPlugin, { permalink: true, permalinkClass: "heading-link", permalinkSymbol: "§" })
-        .use(mdDecorateLinksPlugin)
-        .use(mdUuidToLinkPlugin, { uuidToPost })
+        .use(mdAnchorPlugin, { permalink: mdAnchorPlugin.permalink.linkInsideHeader({
+            class: "heading-link",
+            symbol: "§",
+            placement: "after",
+        }) })
+        .use(mdPrismPlugin)
         .use(mdTocPlugin, { containerClass: "toc", includeLevel: [1, 2, 3] })
         .use(mdCenterTextPlugin)
         .use(mdFootnotesPlugin)
+        .use(mdAttribution, { classNameContainer: "quote", classNameAttribution: "quote-citation", marker: "---", removeMarker: true })
+        // Custom plugins
+        .use(mdDecorateLinksPlugin)
+        .use(mdUuidToLinkPlugin, { uuidToPost })
         .use(mdMermaidPlugin)
         .use(mdInlineCodePlugin)
-        .use(mdPrismPlugin)
     );
 };
