@@ -22,8 +22,15 @@
     <id>{{ absolutePostUrl }}</id>
     <content type="html">
       {% if post.data.image -%}
-      {% set img -%}<p><img src="{{ post.data.image | image_path(1200) | absolute_url }}"></p>{%- endset -%}
-      {%- endif %}
+      {%- if post.data.image_caption -%}
+      {% set alt_text = post.data.image_caption | markdownify | alt_text %}
+      {%- else -%}
+      {% set alt_text = post.data.title %}
+      {%- endif -%}
+      {% set img -%}<p><img src="{{ post.data.image | image_path(1200) | absolute_url }}" alt="{{ alt_text }}"></p>{%- endset -%}
+      {%- else -%}
+      {% set img = "" %}
+      {%- endif -%}
       {{ (img | safe + post.content | safe) | renderTransforms(post.data.page, site.url) }}
     </content>
   </entry>

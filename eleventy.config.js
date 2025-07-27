@@ -1,4 +1,5 @@
 import { URL } from "url";
+import he from "he";
 import MarkdownIt from "markdown-it";
 
 // 11ty plugins
@@ -230,6 +231,15 @@ export default async function (eleventyConfig) {
     eleventyConfig.addFilter("markdownify", (content, lang) => {
         if (!content) return "";
         return mdLib.render(content, { lang, site: { languages } });
+    });
+
+    eleventyConfig.addFilter("alt_text", (content) => {
+        if (!content) return "";
+        return content.replace(/<[^>]+>/g, "")
+            .replace(/&[a-zA-Z0-9#]+;/g, match => he.decode(match))
+            .replace(/\s+/g, " ")
+            .replace(/\n/g, " ")
+            .trim();
     });
 
     eleventyConfig.amendLibrary("md", (mdLib) => mdLib
