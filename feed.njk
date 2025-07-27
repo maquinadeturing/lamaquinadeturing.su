@@ -20,7 +20,12 @@
     <link href="{{ absolutePostUrl }}" />
     <updated>{{ post.date | dateToRfc3339 }}</updated>
     <id>{{ absolutePostUrl }}</id>
-    <content type="html">{{ post.content | renderTransforms(post.data.page, site.url) }}</content>
+    <content type="html">
+      {% if post.data.image -%}
+      {% set img -%}<p><img src="{{ post.data.image | image_path(1200) | absolute_url }}"></p>{%- endset -%}
+      {%- endif %}
+      {{ (img | safe + post.content | safe) | renderTransforms(post.data.page, site.url) }}
+    </content>
   </entry>
   {%- endif %}
   {%- endfor %}
