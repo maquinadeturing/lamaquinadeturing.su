@@ -68,7 +68,7 @@ Al cap i a la fi, per què _aprendre sobre un objecte_ quan pots _experimentar u
 Malauradament, vivim constantment distrets, fascinats pel món dels _altres,_ per la seva _xerrameca_ de segona mà. Al cap i a la fi, som animals socials i no és possible experimentar-ho tot directament, hem d'aprendre moltíssim. Però aquest coneixement, un cop circula, és desconnectat, poc fiable, superficial —en un sentit pràctic— i ens pot distreure de l'experiència primordial.
 
 > El que es diu en la xerrameca com a tal s'escampa en cercles més amplis i adquireix un caràcter autoritari. Les coses són així perquè algú ho diu. La xerrameca és constituïda precisament per aquest xafardedeig i transmetre la paraula, un procés pel qual la seva carència inicial de fonament es veu agreujada fins a convertir-se en completa manca de fonament. I de fet aquesta xerrameca no es limita al xafardeig oral, sinó que fins i tot s'estén al que escrivim, on pren la forma de "gargot". En aquest darrer cas el xafardeig no es basa tant en rumors. S'alimenta de lectures superficials. La comprensió mitjana del lector mai no podrà decidir què ha estat extret de fonts primordials amb esforç i què és només xerrameca.
->--- _Ésser i temps_ de Martin Heidegger (trad. pròpia, p. 169 a [^heidegger]).
+>--- _Ésser i temps_ de Martin Heidegger (trad. pròpia, p. 169 a _Sein und zeit_[^heidegger]).
 
 Per això, des del punt de vista de Heidegger, els models de llenguatge extensos serien màquines de pura _xerrameca._ Les seves paraules de tercera mà estan desconnectades del món, completament inautèntiques. Com més fem servir un xatbot, més ens impedeix experimentar directament el món.
 
